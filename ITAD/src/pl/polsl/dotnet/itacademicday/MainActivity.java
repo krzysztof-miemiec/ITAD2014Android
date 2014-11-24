@@ -1,5 +1,6 @@
 package pl.polsl.dotnet.itacademicday;
 
+import pl.polsl.dotnet.itacademicday.layouts.CounterView;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -60,6 +61,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	public void restoreActionBar(){
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
@@ -117,9 +119,14 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 		public PlaceholderFragment() {
 		}
 
+		private CounterView mITADCounter;
+
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 			View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+			mITADCounter = (CounterView) rootView.findViewById(R.id.itad_countdown);
+			mITADCounter.setEndTime(2014, 12, 1, 8, 0, 0);
+			mITADCounter.start();
 			return rootView;
 		}
 
@@ -127,6 +134,13 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 		public void onAttach(Activity activity){
 			super.onAttach(activity);
 			((MainActivity) activity).onSectionAttached(getArguments().getInt(ARG_SECTION_NUMBER));
+
+		}
+
+		@Override
+		public void onDetach(){
+			mITADCounter.stop();
+			super.onDetach();
 		}
 	}
 

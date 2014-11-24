@@ -10,4 +10,6 @@
     -->
     <dimen name="navigation_drawer_width">240dp</dimen>
 
+    
+    <dimen name="counter_thickness">12dp</dimen>
 </resources>
