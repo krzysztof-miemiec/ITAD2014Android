@@ -34,7 +34,7 @@ public class CounterView extends View {
 		private float mAngle, mDiv, mScale;
 		private int mValue;
 		private String mText;
-		private float mRadius, mCenter;
+		private float mRadius, mCenterX, mCenterY;
 
 		CounterArc(int color, float divider, float scale, String text) {
 			mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -47,17 +47,19 @@ public class CounterView extends View {
 		}
 
 		void refreshSize(float w, float h){
+			mCenterX = w / 2;
+			mCenterY = h / 2;
 			if (w > h) {
 				w = h;
 			} else {
 				h = w;
 			}
-			mCenter = w / 2;
+
 			mRadius = mScale * w / 2;
-			mOval.left = mCenter - mRadius;
-			mOval.top = mCenter - mRadius;
-			mOval.right = mCenter + mRadius;
-			mOval.bottom = mCenter + mRadius;
+			mOval.left = mCenterX - mRadius;
+			mOval.top = mCenterY - mRadius;
+			mOval.right = mCenterX + mRadius;
+			mOval.bottom = mCenterY + mRadius;
 			mInnerOval.left = mOval.left + THICKNESS;
 			mInnerOval.top = mOval.top + THICKNESS;
 			mInnerOval.right = mOval.right - THICKNESS;
@@ -72,8 +74,8 @@ public class CounterView extends View {
 		void draw(Canvas c){
 			c.drawArc(mOval, -90, mAngle, true, mPaint);
 			c.drawOval(mInnerOval, mBackgroundPaint);
-			float cx = (float) Math.sin(Math.PI * mAngle / 180) * (mRadius - THICKNESS / 2) + mCenter;
-			float cy = (float) -Math.cos(Math.PI * mAngle / 180) * (mRadius - THICKNESS / 2) + mCenter;
+			float cx = (float) Math.sin(Math.PI * mAngle / 180) * (mRadius - THICKNESS / 2) + mCenterX;
+			float cy = (float) -Math.cos(Math.PI * mAngle / 180) * (mRadius - THICKNESS / 2) + mCenterY;
 			c.drawCircle(cx, cy, THICKNESS * 1.9f, mPaint);
 			c.drawText(String.valueOf(mValue), cx, cy - THICKNESS * 0.1f, mWhitePaint);
 			c.drawText(mText, cx, cy + THICKNESS * 1.6f, mWhitePaint);

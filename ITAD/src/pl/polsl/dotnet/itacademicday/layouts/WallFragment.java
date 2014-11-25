@@ -3,6 +3,7 @@ package pl.polsl.dotnet.itacademicday.layouts;
 import java.util.ArrayList;
 
 import pl.polsl.dotnet.itacademicday.R;
+import pl.polsl.dotnet.itacademicday.layouts.MainActivity.FontStyle;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -60,6 +61,7 @@ public class WallFragment extends Fragment {
 
 		View rootView = inflater.inflate(R.layout.wall_fragment, container, false);
 		mList = (ListView) rootView.findViewById(R.id.wall_list);
+		MainActivity.setFont(rootView, FontStyle.REGULAR);
 		mMessages = new ArrayList<String>();
 		mAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1, mMessages);
 		mList.setAdapter(mAdapter);
@@ -124,7 +126,6 @@ public class WallFragment extends Fragment {
 	@Override
 	public void onAttach(Activity activity){
 		super.onAttach(activity);
-		((MainActivity) activity).onSectionAttached(getArguments().getInt(ARG_SECTION_NUMBER));
 	}
 
 	@Override

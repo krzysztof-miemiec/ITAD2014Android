@@ -3,6 +3,7 @@ package pl.polsl.dotnet.itacademicday.layouts;
 import java.util.ArrayList;
 
 import pl.polsl.dotnet.itacademicday.R;
+import pl.polsl.dotnet.itacademicday.layouts.MainActivity.FontStyle;
 import pl.polsl.dotnet.itacademicday.models.Lecture;
 import android.app.Activity;
 import android.os.Bundle;
@@ -86,6 +87,7 @@ public class AgendaFragment extends Fragment {
 			LectureViewTag t;
 			if (convertView == null) {
 				ViewGroup v = (ViewGroup) mInflater.inflate(R.layout.lecture, mList, false);
+				MainActivity.setFont(v, FontStyle.SEMILIGHT);
 				t = new LectureViewTag();
 				t.iconView = (ImageView) v.findViewById(R.id.icon);
 				t.nameView = (TextView) v.findViewById(R.id.name);
@@ -108,6 +110,7 @@ public class AgendaFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		mInflater = inflater;
 		View rootView = inflater.inflate(R.layout.agenda_fragment, container, false);
+		MainActivity.setFont(rootView, FontStyle.REGULAR);
 		mList = (ListView) rootView.findViewById(R.id.agenda_list);
 		mAdapter = new AgendaAdapter();
 		mList.setAdapter(mAdapter);
@@ -120,7 +123,6 @@ public class AgendaFragment extends Fragment {
 	@Override
 	public void onAttach(Activity activity){
 		super.onAttach(activity);
-		((MainActivity) activity).onSectionAttached(getArguments().getInt(ARG_SECTION_NUMBER));
 	}
 
 	@Override

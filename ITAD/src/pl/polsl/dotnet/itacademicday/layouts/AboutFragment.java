@@ -1,6 +1,7 @@
 package pl.polsl.dotnet.itacademicday.layouts;
 
 import pl.polsl.dotnet.itacademicday.R;
+import pl.polsl.dotnet.itacademicday.layouts.MainActivity.FontStyle;
 import pl.polsl.dotnet.itacademicday.views.CounterView;
 import android.app.Activity;
 import android.os.Bundle;
@@ -41,6 +42,7 @@ public class AboutFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View rootView = inflater.inflate(R.layout.about_fragment, container, false);
+		MainActivity.setFont(rootView, FontStyle.SEMILIGHT);
 		mITADCounter = (CounterView) rootView.findViewById(R.id.itad_countdown);
 		TextView aboutText = (TextView) rootView.findViewById(R.id.about_text);
 		aboutText.setText(Html.fromHtml(getResources().getString(R.string.about_text)));
@@ -52,7 +54,6 @@ public class AboutFragment extends Fragment {
 	@Override
 	public void onAttach(Activity activity){
 		super.onAttach(activity);
-		((MainActivity) activity).onSectionAttached(getArguments().getInt(ARG_SECTION_NUMBER));
 		if (mITADCounter != null) {
 			mITADCounter.start();
 		}
