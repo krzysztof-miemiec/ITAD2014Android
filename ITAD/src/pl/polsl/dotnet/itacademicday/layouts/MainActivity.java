@@ -2,6 +2,7 @@ package pl.polsl.dotnet.itacademicday.layouts;
 
 import pl.polsl.dotnet.itacademicday.R;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 	 * Used to store the last screen title. For use in {@link #restoreActionBar()}.
 	 */
 	private CharSequence mTitle;
+	private int mColor;
 
 	private static ConnectivityManager mConManager;
 
@@ -54,7 +56,6 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 
 	@Override
 	public void onNavigationDrawerItemSelected(int position){
-		// update the main content by replacing fragments
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		position++;
 		Fragment f = null;
@@ -69,6 +70,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 				f = WallFragment.newInstance(position);
 				break;
 			case 4:
+				f = SponsorsFragment.newInstance(position);
 				break;
 			case 5:
 				break;
@@ -80,15 +82,19 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 		switch (number) {
 			case 1:
 				mTitle = getString(R.string.title_section1);
+				mColor = getResources().getColor(R.color.section1);
 				break;
 			case 2:
 				mTitle = getString(R.string.title_section2);
+				mColor = getResources().getColor(R.color.section2);
 				break;
 			case 3:
 				mTitle = getString(R.string.title_section3);
+				mColor = getResources().getColor(R.color.section3);
 				break;
 			case 4:
 				mTitle = getString(R.string.title_section4);
+				mColor = getResources().getColor(R.color.section4);
 				break;
 		}
 	}
@@ -99,6 +105,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 		actionBar.setDisplayShowTitleEnabled(true);
 		actionBar.setTitle(mTitle);
+		actionBar.setBackgroundDrawable(new ColorDrawable(mColor));
 	}
 
 	@Override

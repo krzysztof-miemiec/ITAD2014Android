@@ -3,8 +3,9 @@ package pl.polsl.dotnet.itacademicday.layouts;
 import java.util.ArrayList;
 
 import pl.polsl.dotnet.itacademicday.R;
-import pl.polsl.dotnet.itacademicday.models.Lecture;
+import pl.polsl.dotnet.itacademicday.models.Sponsor;
 import android.app.Activity;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -18,7 +19,7 @@ import android.widget.TextView;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class AgendaFragment extends Fragment {
+public class SponsorsFragment extends Fragment {
 	/**
 	 * The fragment argument representing the section number for this
 	 * fragment.
@@ -29,41 +30,41 @@ public class AgendaFragment extends Fragment {
 	 * Returns a new instance of this fragment for the given section
 	 * number.
 	 */
-	public static AgendaFragment newInstance(int sectionNumber){
-		AgendaFragment fragment = new AgendaFragment();
+	public static SponsorsFragment newInstance(int sectionNumber){
+		SponsorsFragment fragment = new SponsorsFragment();
 		Bundle args = new Bundle();
 		args.putInt(ARG_SECTION_NUMBER, sectionNumber);
 		fragment.setArguments(args);
 		return fragment;
 	}
 
-	public AgendaFragment() {
+	public SponsorsFragment() {
 	}
 
 	private LayoutInflater mInflater;
 	private ListView mList;
-	private AgendaAdapter mAdapter;
+	private SponsorAdapter mAdapter;
 
-	public class AgendaAdapter extends BaseAdapter {
-		private ArrayList<Lecture> mAgendaList;
+	public class SponsorAdapter extends BaseAdapter {
+		private ArrayList<Sponsor> mSponsorList;
 
-		private class LectureViewTag {
+		private class SponsorViewTag {
 			ImageView iconView;
-			TextView nameView, lecturerView;
+			TextView nameView, descriptionView;
 		}
 
-		public AgendaAdapter() {
-			mAgendaList = new ArrayList<Lecture>();
+		public SponsorAdapter() {
+			mSponsorList = new ArrayList<Sponsor>();
 		}
 
 		@Override
 		public int getCount(){
-			return mAgendaList.size();
+			return mSponsorList.size();
 		}
 
 		@Override
-		public Lecture getItem(int position){
-			return mAgendaList.get(position);
+		public Sponsor getItem(int position){
+			return mSponsorList.get(position);
 		}
 
 		@Override
@@ -71,34 +72,34 @@ public class AgendaFragment extends Fragment {
 			return position;
 		}
 
-		public void add(Lecture l){
-			mAgendaList.add(l);
+		public void add(Sponsor s){
+			mSponsorList.add(s);
 			notifyDataSetChanged();
 		}
 
 		public void clear(){
-			mAgendaList.clear();
+			mSponsorList.clear();
 			notifyDataSetChanged();
 		}
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent){
-			LectureViewTag t;
+			SponsorViewTag t;
 			if (convertView == null) {
-				ViewGroup v = (ViewGroup) mInflater.inflate(R.layout.lecture, mList, false);
-				t = new LectureViewTag();
+				ViewGroup v = (ViewGroup) mInflater.inflate(R.layout.sponsor, mList, false);
+				t = new SponsorViewTag();
 				t.iconView = (ImageView) v.findViewById(R.id.icon);
 				t.nameView = (TextView) v.findViewById(R.id.name);
-				t.lecturerView = (TextView) v.findViewById(R.id.lecturer);
+				t.descriptionView = (TextView) v.findViewById(R.id.description);
 				v.setTag(t);
 				convertView = v;
 			} else {
-				t = (LectureViewTag) convertView.getTag();
+				t = (SponsorViewTag) convertView.getTag();
 			}
-			Lecture l = getItem(position);
-			t.iconView.setImageBitmap(l.getIcon());
+			Sponsor l = getItem(position);
+			t.iconView.setImageBitmap(l.getImage());
 			t.nameView.setText(l.getName());
-			t.lecturerView.setText(l.getLecturer());
+			t.descriptionView.setText(l.getDescription());
 
 			return convertView;
 		}
@@ -107,13 +108,14 @@ public class AgendaFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		mInflater = inflater;
-		View rootView = inflater.inflate(R.layout.agenda_fragment, container, false);
-		mList = (ListView) rootView.findViewById(R.id.agenda_list);
-		mAdapter = new AgendaAdapter();
+		View rootView = inflater.inflate(R.layout.sponsors_fragment, container, false);
+		mList = (ListView) rootView.findViewById(R.id.sponsors_list);
+		mAdapter = new SponsorAdapter();
 		mList.setAdapter(mAdapter);
+
 		//TODO load in separate thread
-		mAdapter.add(new Lecture("Hyper-V", "Janko Walski", "8:00", "12:00",
-				"Postawie wam maszyne linucha na windowsie"));
+		mAdapter.add(new Sponsor("abc def", "descr", BitmapFactory.decodeResource(getResources(),
+				R.drawable.ic_launcher)));
 		return rootView;
 	}
 

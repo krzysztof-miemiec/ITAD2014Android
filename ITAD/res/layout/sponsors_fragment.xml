@@ -14,20 +14,20 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/section2"
+            android:background="@color/section4"
             android:orientation="vertical" >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:text="@string/title_section2"
+                android:text="@string/title_section4"
                 android:textColor="@android:color/white"
                 android:textSize="30sp" />
         </LinearLayout>
 
         <ListView
-            android:id="@+id/agenda_list"
+            android:id="@+id/sponsors_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#f5f5f5"
