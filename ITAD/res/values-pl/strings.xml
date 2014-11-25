@@ -21,6 +21,10 @@
         <p>By wziąć udział w tym wydarzeniu wymagana jest rejestracja w portalu <i>codeguru.pl</i>, liczba miejsc jest ograniczona.</p>
         <p>Na każdego zarejestrowanego uczestnika czeka kupon rabatowy w serwisie Helion.pl, a dodatkowo, pierwsze 200 osób otrzyma darmowe koszulki!</p>
         <p>Osoby, które zarejestrują się na konferencję będą miały szansę zdobycia atrakcyjnych nagród ufundowanych przez partnerów konferencji!</p>
-     ]]></string>
-
+     ]]>
+    </string>
+    <string name="comment">Skomentuj</string>
+    <string name="connection_error">Wystąpił bład połączenia. Sprawdź czy masz połączenie z Internetem i spróbuj ponownie.</string>
+    <string name="server_error">Wystąpił błąd komunikacji. Spróbuj ponownie później.</string>
+<string name="await_for_comment_submit">Twój komentarz został wysłany! Po moderacji zostanie wyświetlony na wallu.</string>
 </resources>
