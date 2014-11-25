@@ -11,5 +11,7 @@
     <dimen name="navigation_drawer_width">240dp</dimen>
 
     
-    <dimen name="counter_thickness">12dp</dimen>
+    <dimen name="counter_thickness">10dp</dimen>
+    <dimen name="list_item_height">80dp</dimen>
+    <dimen name="big_font">18sp</dimen>
 </resources>
