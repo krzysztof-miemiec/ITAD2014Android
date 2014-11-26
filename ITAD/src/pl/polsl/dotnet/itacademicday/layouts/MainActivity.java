@@ -35,9 +35,36 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 	private static Typeface regular, light, semilight;
 	private TextView mTitleView;
 
+	//	/**
+	//	 * Used to store data about lectures
+	//	 */
+	//	private static ArrayList<LecturesEntity> mLectures;
+	//
+	//	/**
+	//	 * Used to store data about sponsors
+	//	 */
+	//	private static ArrayList<SponsorsEntity> mSponsors;
+
 	public static int getCurrentColor(){
 		return mColor;
 	}
+
+	//
+	//	public static ArrayList<LecturesEntity> getLectures(){
+	//		return mLectures;
+	//	}
+	//
+	//	public static ArrayList<SponsorsEntity> getSponsors(){
+	//		return mSponsors;
+	//	}
+	//
+	//	public static void setLectures(ArrayList<LecturesEntity> lectures){
+	//		mLectures = lectures;
+	//	}
+	//
+	//	public static void setSponsors(ArrayList<SponsorsEntity> sponsors){
+	//		mSponsors = sponsors;
+	//	}
 
 	public static boolean hasAccessToNetwork(){
 		final NetworkInfo activeNetwork = mConManager.getActiveNetworkInfo();
@@ -48,6 +75,26 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		//		Thread thread = new Thread(new Runnable() {
+		//
+		//			@SuppressLint("NewApi")
+		//			@Override
+		//			public void run(){
+		//				try {
+		//					if (android.os.Build.VERSION.SDK_INT > 9) {
+		//						StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+		//						StrictMode.setThreadPolicy(policy);
+		//					}
+		//					setLectures(DataFactory.getLecturesData());
+		//					setSponsors(DataFactory.getSponsorsData());
+		//				} catch (Exception e) {
+		//					e.printStackTrace();
+		//				}
+		//			}
+		//		});
+		//		thread.start();
+
 		mConManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 		regular = Typeface.createFromAsset(getAssets(), "Segoe.ttf");
 		light = Typeface.createFromAsset(getAssets(), "SegoeLight.ttf");
@@ -62,6 +109,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 		mTitleView.setPadding((int) getResources().getDimension(R.dimen.title_padding), 0, 0, 0);
 		// Set up the drawer.
 		mNavigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
+
 	}
 
 	@Override
@@ -73,6 +121,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 
 	@Override
 	public void onNavigationDrawerItemSelected(int position){
+		// update the main content by replacing fragments
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		position++;
 		Fragment f = null;
@@ -103,7 +152,6 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 	public void makeActionBar(){
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM);
-		//actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 		actionBar.setDisplayShowTitleEnabled(false);
 		actionBar.setCustomView(mTitleView);
 		actionBar.setBackgroundDrawable(new ColorDrawable(mColor));

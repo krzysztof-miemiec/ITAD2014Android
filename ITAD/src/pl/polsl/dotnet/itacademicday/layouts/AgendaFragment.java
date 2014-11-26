@@ -3,10 +3,14 @@ package pl.polsl.dotnet.itacademicday.layouts;
 import java.util.ArrayList;
 
 import pl.polsl.dotnet.itacademicday.R;
+import pl.polsl.dotnet.itacademicday.core.DataFactory;
+import pl.polsl.dotnet.itacademicday.core.entities.LecturesEntity;
 import pl.polsl.dotnet.itacademicday.layouts.MainActivity.FontStyle;
-import pl.polsl.dotnet.itacademicday.models.Lecture;
+import pl.polsl.dotnet.itacademicday.utils.Bitmaps;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +18,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -44,9 +50,10 @@ public class AgendaFragment extends Fragment {
 	private LayoutInflater mInflater;
 	private ListView mList;
 	private AgendaAdapter mAdapter;
+	private ProgressBar mProgressBar;
 
 	public class AgendaAdapter extends BaseAdapter {
-		private ArrayList<Lecture> mAgendaList;
+		private ArrayList<LecturesEntity> mAgendaList;
 
 		private class LectureViewTag {
 			ImageView iconView;
@@ -54,7 +61,7 @@ public class AgendaFragment extends Fragment {
 		}
 
 		public AgendaAdapter() {
-			mAgendaList = new ArrayList<Lecture>();
+			mAgendaList = new ArrayList<LecturesEntity>();
 		}
 
 		@Override
@@ -63,7 +70,7 @@ public class AgendaFragment extends Fragment {
 		}
 
 		@Override
-		public Lecture getItem(int position){
+		public LecturesEntity getItem(int position){
 			return mAgendaList.get(position);
 		}
 
@@ -72,14 +79,16 @@ public class AgendaFragment extends Fragment {
 			return position;
 		}
 
-		public void add(Lecture l){
-			mAgendaList.add(l);
-			notifyDataSetChanged();
-		}
-
-		public void clear(){
-			mAgendaList.clear();
-			notifyDataSetChanged();
+		public void setData(ArrayList<LecturesEntity> l){
+			if (l != null) {
+				mAgendaList = l;
+				getActivity().runOnUiThread(new Runnable() {
+					@Override
+					public void run(){
+						notifyDataSetChanged();
+					}
+				});
+			}
 		}
 
 		@Override
@@ -97,13 +106,34 @@ public class AgendaFragment extends Fragment {
 			} else {
 				t = (LectureViewTag) convertView.getTag();
 			}
-			Lecture l = getItem(position);
-			t.iconView.setImageBitmap(l.getIcon());
+			LecturesEntity l = getItem(position);
+			Bitmaps.loadNetBitmapAsync(l.getIconURL(), t.iconView.getWidth(), t.iconView.getHeight())
+					.result(t.iconView).start();
 			t.nameView.setText(l.getName());
 			t.lecturerView.setText(l.getLecturer());
 
 			return convertView;
 		}
+	}
+
+	private void setIsLoading(final boolean isLoading){
+		getActivity().runOnUiThread(new Runnable() {
+
+			@Override
+			public void run(){
+				mProgressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+			}
+		});
+	}
+
+	private void errorToast(final Exception e){
+		getActivity().runOnUiThread(new Runnable() {
+
+			@Override
+			public void run(){
+				Toast.makeText(getActivity(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+			}
+		});
 	}
 
 	@Override
@@ -112,11 +142,29 @@ public class AgendaFragment extends Fragment {
 		View rootView = inflater.inflate(R.layout.agenda_fragment, container, false);
 		MainActivity.setFont(rootView, FontStyle.REGULAR);
 		mList = (ListView) rootView.findViewById(R.id.agenda_list);
+		mProgressBar = (ProgressBar) rootView.findViewById(R.id.progress_bar);
 		mAdapter = new AgendaAdapter();
 		mList.setAdapter(mAdapter);
-		//TODO load in separate thread
-		mAdapter.add(new Lecture("Hyper-V", "Janko Walski", "8:00", "12:00",
-				"Postawie wam maszyne linucha na windowsie"));
+		Thread thread = new Thread(new Runnable() {
+
+			@SuppressLint("NewApi")
+			@Override
+			public void run(){
+				setIsLoading(true);
+				try {
+					if (android.os.Build.VERSION.SDK_INT > 9) {
+						StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+						StrictMode.setThreadPolicy(policy);
+					}
+					mAdapter.setData(DataFactory.getLecturesData());
+				} catch (Exception e) {
+					e.printStackTrace();
+					errorToast(e);
+				}
+				setIsLoading(false);
+			}
+		});
+		thread.start();
 		return rootView;
 	}
 
