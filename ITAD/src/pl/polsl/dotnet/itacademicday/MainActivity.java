@@ -25,16 +25,43 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 	 * Used to store the last screen title. For use in {@link #restoreActionBar()}.
 	 */
 	private CharSequence mTitle;
+	/**
+	 * Used to store data about lectures
+	 */
+	private ArrayList<LecturesEntity> lectures;
+	
+	/**
+	 * Used to store data about sponsors
+	 */
+	private ArrayList<SponsorsEntity> sponsors;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		Thread thread = new Thread(new Runnable(){
+			
+			@SuppressLint("NewApi") @Override
+			public void run() {
+			    try {
+			    	if (android.os.Build.VERSION.SDK_INT > 9) {
+			    		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+			    		StrictMode.setThreadPolicy(policy); 
+			    		}
+			    	lectures = DataFactory.getLecturesData();
+			    	sposors = DataFactory.getSponsorsData();
+			    } catch (Exception e) {
+			       e.printStackTrace();
+			    }
+			}
+			});
+			thread.start();
 
 		mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(
 				R.id.navigation_drawer);
 		mTitle = getTitle();
-
+		
 		// Set up the drawer.
 		mNavigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
 	}
