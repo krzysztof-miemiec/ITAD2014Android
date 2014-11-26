@@ -1,10 +1,11 @@
-package pl.polsl.dotnet.itacademicday.layouts;
+package pl.polsl.dotnet.itacademicday.views;
 
 import java.util.GregorianCalendar;
 
 import pl.polsl.dotnet.itacademicday.R;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.RectF;
@@ -16,7 +17,7 @@ import android.view.View;
 public class CounterView extends View {
 
 	private Thread mRefreshThread;
-	private Paint mWhitePaint;
+	private Paint mWhitePaint, mBackgroundPaint;
 	private CounterArc mSeconds, mMinutes, mHours, mDays;
 	private long mEndTime;
 	private Handler mHandler;
@@ -33,7 +34,7 @@ public class CounterView extends View {
 		private float mAngle, mDiv, mScale;
 		private int mValue;
 		private String mText;
-		private float mRadius, mCenter;
+		private float mRadius, mCenterX, mCenterY;
 
 		CounterArc(int color, float divider, float scale, String text) {
 			mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -46,17 +47,19 @@ public class CounterView extends View {
 		}
 
 		void refreshSize(float w, float h){
+			mCenterX = w / 2;
+			mCenterY = h / 2;
 			if (w > h) {
-				h = w;
-			} else {
 				w = h;
+			} else {
+				h = w;
 			}
-			mCenter = w / 2;
+
 			mRadius = mScale * w / 2;
-			mOval.left = mCenter - mRadius;
-			mOval.top = mCenter - mRadius;
-			mOval.right = mCenter + mRadius;
-			mOval.bottom = mCenter + mRadius;
+			mOval.left = mCenterX - mRadius;
+			mOval.top = mCenterY - mRadius;
+			mOval.right = mCenterX + mRadius;
+			mOval.bottom = mCenterY + mRadius;
 			mInnerOval.left = mOval.left + THICKNESS;
 			mInnerOval.top = mOval.top + THICKNESS;
 			mInnerOval.right = mOval.right - THICKNESS;
@@ -70,10 +73,10 @@ public class CounterView extends View {
 
 		void draw(Canvas c){
 			c.drawArc(mOval, -90, mAngle, true, mPaint);
-			c.drawOval(mInnerOval, mWhitePaint);
-			float cx = (float) Math.sin(Math.PI * mAngle / 180) * (mRadius - THICKNESS / 2) + mCenter;
-			float cy = (float) -Math.cos(Math.PI * mAngle / 180) * (mRadius - THICKNESS / 2) + mCenter;
-			c.drawCircle(cx, cy, THICKNESS * 1.7f, mPaint);
+			c.drawOval(mInnerOval, mBackgroundPaint);
+			float cx = (float) Math.sin(Math.PI * mAngle / 180) * (mRadius - THICKNESS / 2) + mCenterX;
+			float cy = (float) -Math.cos(Math.PI * mAngle / 180) * (mRadius - THICKNESS / 2) + mCenterY;
+			c.drawCircle(cx, cy, THICKNESS * 1.9f, mPaint);
 			c.drawText(String.valueOf(mValue), cx, cy - THICKNESS * 0.1f, mWhitePaint);
 			c.drawText(mText, cx, cy + THICKNESS * 1.6f, mWhitePaint);
 		}
@@ -102,9 +105,11 @@ public class CounterView extends View {
 		mHandler = new Handler();
 		THICKNESS = getContext().getResources().getDimension(R.dimen.counter_thickness);
 		mWhitePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-		mWhitePaint.setColor(((ColorDrawable) getBackground()).getColor());
+		mWhitePaint.setColor(Color.WHITE);
 		mWhitePaint.setTextAlign(Align.CENTER);
 		mWhitePaint.setTextSize(THICKNESS * 2);
+		mBackgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		mBackgroundPaint.setColor(((ColorDrawable) getBackground()).getColor());
 		mSeconds = new CounterArc(0xFF2196F3, 60, 0.8f, "S");
 		mMinutes = new CounterArc(0xFFF44336, 60, 0.6f, "M");
 		mHours = new CounterArc(0xFF4CAF50, 24, 0.4f, "H");
@@ -117,13 +122,20 @@ public class CounterView extends View {
 		mMinutes.refreshSize(w, h);
 		mHours.refreshSize(w, h);
 		mDays.refreshSize(w, h);
-		postInvalidate();
+		mHandler.post(new Runnable() {
+
+			@Override
+			public void run(){
+				invalidate();
+				requestLayout();
+			}
+		});
 	}
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec){
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-		setupSizing(getMeasuredWidth(), getMeasuredHeight());
+		setupSizing(getWidth(), getHeight());
 	}
 
 	public void start(){

@@ -1,0 +1,38 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/list_item_height"
+    android:background="@drawable/card"
+    android:layout_margin="10dp">
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="@dimen/list_item_height"
+        android:layout_height="@dimen/list_item_height"
+        android:scaleType="centerInside"/>
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@+id/icon"
+        android:textSize="@dimen/big_font"
+        android:text="Lecture"
+        android:padding="4dp"
+        android:textColor="@color/text_color" />
+
+    <TextView
+        android:id="@+id/lecturer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/name"
+        android:textStyle="italic"
+        android:padding="4dp"
+        android:layout_toRightOf="@+id/icon"
+        android:text="Lecturer"
+        android:textColor="@color/text_color" />
+
+</RelativeLayout>

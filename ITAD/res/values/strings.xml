@@ -2,12 +2,29 @@
 <resources>
 
     <string name="app_name">IT Academic Day</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="action_example">Example action</string>
-    <string name="action_settings">Settings</string>
-
+    <string name="title_section1">O konferencji</string>
+    <string name="title_section2">Agenda</string>
+    <string name="title_section3">Wall</string>
+    <string name="title_section4">Sponsorzy</string>
+    <string name="navigation_drawer_open">Otwarcie nawigacji</string>
+    <string name="navigation_drawer_close">Zamknięcie nawigacji</string>
+    <string name="time_left">Czas do konferencji</string>
+    <string name="about_text" formatted="true">
+<![CDATA[
+<p>Konferencja ta będzie mieć miejsce 2. grudnia bieżącego roku w Auli A, wydziału Automatyki Elektroniki
+        i Informatyki. Podobnie jak ubiegłoroczna edycja konferencji tak i ta skierowana jest do studentów informatyki,
+        uczniów szkół średnich o profilu informatycznym, a także fascynatów nowych technologii. Udział w tym wydarzeniu
+        to doskonały sposób na zdobycie najbardziej aktualnej wiedzy dotyczącej programowania z wykorzystaniem nowoczesnych
+        narzędzi i języków dostarczonych przez firmę Microsoft. Tematyka spotkania obejmuje również zagadnienia
+        przeznaczone dla specjalistów IT i wszystkich, którzy dopiero rozpoczynają swoją przygodę w barwnym świecie
+        technologii Microsoft.</p>
+        <p>By wziąć udział w tym wydarzeniu wymagana jest rejestracja w portalu <i>codeguru.pl</i>, liczba miejsc jest ograniczona.</p>
+        <p>Na każdego zarejestrowanego uczestnika czeka kupon rabatowy w serwisie Helion.pl, a dodatkowo, pierwsze 200 osób otrzyma darmowe koszulki!</p>
+        <p>Osoby, które zarejestrują się na konferencję będą miały szansę zdobycia atrakcyjnych nagród ufundowanych przez partnerów konferencji!</p>
+     ]]>
+    </string>
+    <string name="comment">Skomentuj</string>
+    <string name="connection_error">Wystąpił bład połączenia. Sprawdź czy masz połączenie z Internetem i spróbuj ponownie.</string>
+    <string name="server_error">Wystąpił błąd komunikacji. Spróbuj ponownie później.</string>
+<string name="await_for_comment_submit">Twój komentarz został wysłany! Po moderacji zostanie wyświetlony na wallu.</string>
 </resources>
