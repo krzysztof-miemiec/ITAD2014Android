@@ -19,6 +19,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.readystatesoftware.systembartint.SystemBarTintManager;
+
 public class MainActivity extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
 	/**
@@ -32,6 +34,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 	private static int mColor;
 
 	private static ConnectivityManager mConManager;
+	private SystemBarTintManager mTintManager;
 	private static Typeface regular, light, semilight;
 	private TextView mTitleView;
 
@@ -48,6 +51,10 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		mTintManager = new SystemBarTintManager(this);
+		mTintManager.setStatusBarTintEnabled(true);
+
 		mConManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 		regular = Typeface.createFromAsset(getAssets(), "Segoe.ttf");
 		light = Typeface.createFromAsset(getAssets(), "SegoeLight.ttf");
@@ -62,6 +69,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 		mTitleView.setPadding((int) getResources().getDimension(R.dimen.title_padding), 0, 0, 0);
 		// Set up the drawer.
 		mNavigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
+
 	}
 
 	@Override
@@ -73,6 +81,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 
 	@Override
 	public void onNavigationDrawerItemSelected(int position){
+		// update the main content by replacing fragments
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		position++;
 		Fragment f = null;
@@ -103,10 +112,12 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 	public void makeActionBar(){
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM);
-		//actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 		actionBar.setDisplayShowTitleEnabled(false);
 		actionBar.setCustomView(mTitleView);
 		actionBar.setBackgroundDrawable(new ColorDrawable(mColor));
+		if (mTintManager != null) {
+			mTintManager.setStatusBarTintColor(mColor);
+		}
 	}
 
 	@Override

@@ -1,18 +1,21 @@
 package pl.polsl.dotnet.itacademicday;
 
-import pl.polsl.dotnet.itacademicday.layouts.CounterView;
-import android.app.Activity;
+import pl.polsl.dotnet.itacademicday.layouts.AboutFragment;
+import pl.polsl.dotnet.itacademicday.layouts.AgendaFragment;
+import pl.polsl.dotnet.itacademicday.layouts.NavigationDrawerFragment;
+import pl.polsl.dotnet.itacademicday.layouts.SponsorsFragment;
+import pl.polsl.dotnet.itacademicday.layouts.WallFragment;
+import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 
 public class MainActivity extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
@@ -25,65 +28,77 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 	 * Used to store the last screen title. For use in {@link #restoreActionBar()}.
 	 */
 	private CharSequence mTitle;
-	/**
-	 * Used to store data about lectures
-	 */
-	private ArrayList<LecturesEntity> lectures;
-	
-	/**
-	 * Used to store data about sponsors
-	 */
-	private ArrayList<SponsorsEntity> sponsors;
+	private int mColor;
+
+	private static ConnectivityManager mConManager;
+
+	public static boolean hasAccessToNetwork(){
+
+		final NetworkInfo activeNetwork = mConManager.getActiveNetworkInfo();
+		return (activeNetwork != null && activeNetwork.isConnected());
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
-		Thread thread = new Thread(new Runnable(){
-			
-			@SuppressLint("NewApi") @Override
-			public void run() {
-			    try {
-			    	if (android.os.Build.VERSION.SDK_INT > 9) {
-			    		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-			    		StrictMode.setThreadPolicy(policy); 
-			    		}
-			    	lectures = DataFactory.getLecturesData();
-			    	sposors = DataFactory.getSponsorsData();
-			    } catch (Exception e) {
-			       e.printStackTrace();
-			    }
-			}
-			});
-			thread.start();
-
+		mConManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 		mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(
 				R.id.navigation_drawer);
 		mTitle = getTitle();
-		
+
 		// Set up the drawer.
 		mNavigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
 	}
 
 	@Override
+	protected void onResume(){
+		super.onResume();
+		if (mConManager == null)
+			mConManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	}
+
+	@Override
 	public void onNavigationDrawerItemSelected(int position){
-		// update the main content by replacing fragments
 		FragmentManager fragmentManager = getSupportFragmentManager();
-		fragmentManager.beginTransaction().replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
-				.commit();
+		position++;
+		Fragment f = null;
+		switch (position) {
+			case 1:
+				f = AboutFragment.newInstance(position);
+				break;
+			case 2:
+				f = AgendaFragment.newInstance(position);
+				break;
+			case 3:
+				f = WallFragment.newInstance(position);
+				break;
+			case 4:
+				f = SponsorsFragment.newInstance(position);
+				break;
+			case 5:
+				break;
+		}
+		fragmentManager.beginTransaction().replace(R.id.container, f).commit();
 	}
 
 	public void onSectionAttached(int number){
 		switch (number) {
 			case 1:
 				mTitle = getString(R.string.title_section1);
+				mColor = getResources().getColor(R.color.section1);
 				break;
 			case 2:
 				mTitle = getString(R.string.title_section2);
+				mColor = getResources().getColor(R.color.section2);
 				break;
 			case 3:
 				mTitle = getString(R.string.title_section3);
+				mColor = getResources().getColor(R.color.section3);
+				break;
+			case 4:
+				mTitle = getString(R.string.title_section4);
+				mColor = getResources().getColor(R.color.section4);
 				break;
 		}
 	}
@@ -94,81 +109,16 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 		actionBar.setDisplayShowTitleEnabled(true);
 		actionBar.setTitle(mTitle);
+		actionBar.setBackgroundDrawable(new ColorDrawable(mColor));
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu){
 		if (!mNavigationDrawerFragment.isDrawerOpen()) {
-			// Only show items in the action bar relevant to this screen
-			// if the drawer is not showing. Otherwise, let the drawer
-			// decide what to show in the action bar.
-			getMenuInflater().inflate(R.menu.main, menu);
 			restoreActionBar();
 			return true;
 		}
 		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item){
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
-	/**
-	 * A placeholder fragment containing a simple view.
-	 */
-	public static class PlaceholderFragment extends Fragment {
-		/**
-		 * The fragment argument representing the section number for this
-		 * fragment.
-		 */
-		private static final String ARG_SECTION_NUMBER = "section_number";
-
-		/**
-		 * Returns a new instance of this fragment for the given section
-		 * number.
-		 */
-		public static PlaceholderFragment newInstance(int sectionNumber){
-			PlaceholderFragment fragment = new PlaceholderFragment();
-			Bundle args = new Bundle();
-			args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-			fragment.setArguments(args);
-			return fragment;
-		}
-
-		public PlaceholderFragment() {
-		}
-
-		private CounterView mITADCounter;
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-			View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-			mITADCounter = (CounterView) rootView.findViewById(R.id.itad_countdown);
-			mITADCounter.setEndTime(2014, 12, 1, 8, 0, 0);
-			mITADCounter.start();
-			return rootView;
-		}
-
-		@Override
-		public void onAttach(Activity activity){
-			super.onAttach(activity);
-			((MainActivity) activity).onSectionAttached(getArguments().getInt(ARG_SECTION_NUMBER));
-
-		}
-
-		@Override
-		public void onDetach(){
-			mITADCounter.stop();
-			super.onDetach();
-		}
 	}
 
 }
