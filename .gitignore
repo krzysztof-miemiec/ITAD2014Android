@@ -1,3 +1,4 @@
 *.dex
 *.class
 */bin/android
+.metadata
