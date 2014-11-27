@@ -12,15 +12,15 @@ public class Sponsor {
 		this.image = image;
 	}
 
-	public String getName(){
+	public String getName() {
 		return name;
 	}
 
-	public String getDescription(){
+	public String getDescription() {
 		return description;
 	}
 
-	public Bitmap getImage(){
+	public Bitmap getImage() {
 		return image;
 	}
 

@@ -1,5 +1,6 @@
 package pl.polsl.dotnet.itacademicday.core.entities;
 
+import android.annotation.SuppressLint;
 import java.util.Date;
 
 import org.json.JSONException;
@@ -47,15 +48,18 @@ public class LecturesEntity {
 			this.setOngoing(object.getBoolean("Ongoing"));
 			this.setAbout(object.getString("About"));
 			this.setIconURL(object.getString("IconUrl"));
-			this.setStartHour(this.getDateJsonFromString(object.getString("StartHour")));
-			this.setEndHour(this.getDateJsonFromString(object.getString("EndHour")));
+			this.setStartHour(this.getDateJsonFromString(object
+					.getString("StartHour")));
+			this.setEndHour(this.getDateJsonFromString(object
+					.getString("EndHour")));
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 
 	}
 
-	private Date getDateJsonFromString(String jsonString){
+	@SuppressLint("UseValueOf") 
+	private Date getDateJsonFromString(String jsonString) {
 		jsonString = jsonString.substring(6, jsonString.length() - 2);
 		Long l = Long.getLong(jsonString);
 		if (l == null)
@@ -63,99 +67,99 @@ public class LecturesEntity {
 		return new Date(l);
 	}
 
-	public int getId(){
+	public int getId() {
 		return Id;
 	}
 
-	public void setId(int id){
+	public void setId(int id) {
 		Id = id;
 	}
 
-	public String getSpeaker(){
+	public String getSpeaker() {
 		return Speaker;
 	}
 
-	public void setSpeaker(String speaker){
+	public void setSpeaker(String speaker) {
 		Speaker = speaker;
 	}
 
-	public String getLecturer(){
+	public String getLecturer() {
 		return Lecturer;
 	}
 
-	public void setLecturer(String lecturer){
+	public void setLecturer(String lecturer) {
 		Lecturer = lecturer;
 	}
 
-	public String getName(){
+	public String getName() {
 		return Name;
 	}
 
-	public void setName(String name){
+	public void setName(String name) {
 		Name = name;
 	}
 
-	public String getStartTimeText(){
+	public String getStartTimeText() {
 		return StartTimeText;
 	}
 
-	public void setStartTimeText(String startTimeText){
+	public void setStartTimeText(String startTimeText) {
 		StartTimeText = startTimeText;
 	}
 
-	public String getEndTimeText(){
+	public String getEndTimeText() {
 		return EndTimeText;
 	}
 
-	public void setEndTimeText(String endTimeText){
+	public void setEndTimeText(String endTimeText) {
 		EndTimeText = endTimeText;
 	}
 
-	public boolean isOngoing(){
+	public boolean isOngoing() {
 		return Ongoing;
 	}
 
-	public void setOngoing(boolean ongoing){
+	public void setOngoing(boolean ongoing) {
 		Ongoing = ongoing;
 	}
 
-	public String getAbout(){
+	public String getAbout() {
 		return About;
 	}
 
-	public void setAbout(String about){
+	public void setAbout(String about) {
 		About = about;
 	}
 
-	public Date getStartHour(){
+	public Date getStartHour() {
 		return StartHour;
 	}
 
-	public void setStartHour(Date startHour){
+	public void setStartHour(Date startHour) {
 		StartHour = startHour;
 	}
 
-	public Date getEndHour(){
+	public Date getEndHour() {
 		return EndHour;
 	}
 
-	public void setEndHour(Date endHour){
+	public void setEndHour(Date endHour) {
 		EndHour = endHour;
 	}
 
-	public String getIconURL(){
+	public String getIconURL() {
 		return IconURL;
 	}
 
-	public void setIconURL(String iconURL){
+	public void setIconURL(String iconURL) {
 		IconURL = iconURL;
 	}
 
-	public String getSponsor(){
+	public String getSponsor() {
 		return Sponsor;
 	}
 
-	public void setSponsor(String sponsor){
+	public void setSponsor(String sponsor) {
 		Sponsor = sponsor;
 	}
 }

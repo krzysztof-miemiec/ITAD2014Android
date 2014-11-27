@@ -1,6 +1,7 @@
 package pl.polsl.dotnet.itacademicday.layouts;
 
 import pl.polsl.dotnet.itacademicday.R;
+import pl.polsl.dotnet.itacademicday.core.DataFactory;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -50,8 +51,9 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		DataFactory.setSharedPreferences(getPreferences(0));
 		setContentView(R.layout.activity_main);
-
+		
 		mTintManager = new SystemBarTintManager(this);
 		mTintManager.setStatusBarTintEnabled(true);
 
