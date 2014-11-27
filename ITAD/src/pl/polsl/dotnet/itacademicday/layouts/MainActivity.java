@@ -19,6 +19,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.readystatesoftware.systembartint.SystemBarTintManager;
+
 public class MainActivity extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
 	/**
@@ -32,39 +34,13 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 	private static int mColor;
 
 	private static ConnectivityManager mConManager;
+	private SystemBarTintManager mTintManager;
 	private static Typeface regular, light, semilight;
 	private TextView mTitleView;
-
-	//	/**
-	//	 * Used to store data about lectures
-	//	 */
-	//	private static ArrayList<LecturesEntity> mLectures;
-	//
-	//	/**
-	//	 * Used to store data about sponsors
-	//	 */
-	//	private static ArrayList<SponsorsEntity> mSponsors;
 
 	public static int getCurrentColor(){
 		return mColor;
 	}
-
-	//
-	//	public static ArrayList<LecturesEntity> getLectures(){
-	//		return mLectures;
-	//	}
-	//
-	//	public static ArrayList<SponsorsEntity> getSponsors(){
-	//		return mSponsors;
-	//	}
-	//
-	//	public static void setLectures(ArrayList<LecturesEntity> lectures){
-	//		mLectures = lectures;
-	//	}
-	//
-	//	public static void setSponsors(ArrayList<SponsorsEntity> sponsors){
-	//		mSponsors = sponsors;
-	//	}
 
 	public static boolean hasAccessToNetwork(){
 		final NetworkInfo activeNetwork = mConManager.getActiveNetworkInfo();
@@ -76,24 +52,8 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		//		Thread thread = new Thread(new Runnable() {
-		//
-		//			@SuppressLint("NewApi")
-		//			@Override
-		//			public void run(){
-		//				try {
-		//					if (android.os.Build.VERSION.SDK_INT > 9) {
-		//						StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-		//						StrictMode.setThreadPolicy(policy);
-		//					}
-		//					setLectures(DataFactory.getLecturesData());
-		//					setSponsors(DataFactory.getSponsorsData());
-		//				} catch (Exception e) {
-		//					e.printStackTrace();
-		//				}
-		//			}
-		//		});
-		//		thread.start();
+		mTintManager = new SystemBarTintManager(this);
+		mTintManager.setStatusBarTintEnabled(true);
 
 		mConManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 		regular = Typeface.createFromAsset(getAssets(), "Segoe.ttf");
@@ -155,6 +115,9 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 		actionBar.setDisplayShowTitleEnabled(false);
 		actionBar.setCustomView(mTitleView);
 		actionBar.setBackgroundDrawable(new ColorDrawable(mColor));
+		if (mTintManager != null) {
+			mTintManager.setStatusBarTintColor(mColor);
+		}
 	}
 
 	@Override
