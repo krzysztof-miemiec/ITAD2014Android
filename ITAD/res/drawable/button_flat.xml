@@ -19,11 +19,6 @@
     <item><shape>
             <corners android:radius="2dp" />
 
-            <solid android:color="#33999999" />
-        </shape></item>
-    <item><shape>
-            <corners android:radius="2dp" />
-
             <solid android:color="#0000" />
         </shape></item>
 
