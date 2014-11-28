@@ -7,6 +7,7 @@ import pl.polsl.dotnet.itacademicday.core.DataFactory;
 import pl.polsl.dotnet.itacademicday.utils.Bitmaps;
 import pl.polsl.dotnet.itacademicday.utils.WorkerThread;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -16,18 +17,14 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
@@ -39,8 +36,10 @@ import android.widget.TextView;
 import com.nineoldandroids.animation.ArgbEvaluator;
 import com.nineoldandroids.animation.ValueAnimator;
 import com.nineoldandroids.animation.ValueAnimator.AnimatorUpdateListener;
+import com.readystatesoftware.systembartint.SystemBarTintManager;
+import com.readystatesoftware.systembartint.SystemBarTintManager.SystemBarConfig;
 
-public class MainActivity extends ActionBarActivity implements NavigationView.NavigationDrawerCallbacks {
+public class MainActivity extends Activity implements NavigationView.NavigationDrawerCallbacks {
 
 	private static NavigationView mNavigationDrawer;
 
@@ -54,6 +53,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.Na
 	private FrameLayout mContentHolder;
 	private static WorkerThread mWorker;
 	private static File mCacheDir;
+	private SystemBarTintManager mTintManager;
 
 	public static WorkerThread getWorker(){
 		if (mWorker == null) {
@@ -81,21 +81,17 @@ public class MainActivity extends ActionBarActivity implements NavigationView.Na
 		super.onCreate(savedInstanceState);
 
 		DataFactory.setSharedPreferences(getPreferences(0));
-<<<<<<< HEAD
 		mCacheDir = new File(getCacheDir().getPath());
-=======
-		
-		final String cachePath = ((Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED || !Environment
-				.isExternalStorageRemovable()) && getExternalCacheDir() != null) ? getExternalCacheDir()
-				.getPath() : getCacheDir().getPath();
-		mCacheDir = new File(cachePath);
->>>>>>> 690375b671353b7345df928aea632d1c148fe81f
 		Bitmaps.setup();
 
 		setContentView(R.layout.activity_main);
-		ActionBar ab = getSupportActionBar();
-		if (ab != null)
-			ab.hide();
+
+		mTintManager = new SystemBarTintManager(this);
+		mTintManager.setStatusBarTintEnabled(true);
+		SystemBarConfig config = mTintManager.getConfig();
+		findViewById(R.id.root_layout).setPadding(0, config.getPixelInsetTop(false), config.getPixelInsetRight(),
+				config.getPixelInsetBottom());
+
 		mHeader = (ViewGroup) findViewById(R.id.action_bar_layout);
 		mTitleView = (TextView) mHeader.findViewById(R.id.action_bar_title);
 		mTitleView.setTypeface(light);
@@ -123,23 +119,6 @@ public class MainActivity extends ActionBarActivity implements NavigationView.Na
 		super.onResume();
 		if (mConManager == null)
 			mConManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-	}
-
-	@SuppressLint("InlinedApi")
-	@Override
-	public void onWindowFocusChanged(boolean hasFocus){
-		super.onWindowFocusChanged(hasFocus);
-		if (hasFocus) {
-			if (Build.VERSION.SDK_INT < 16) {
-				getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-						WindowManager.LayoutParams.FLAG_FULLSCREEN);
-			} else {
-				getWindow().getDecorView().setSystemUiVisibility(
-						View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-								| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-								| View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-			}
-		}
 	}
 
 	@Override
@@ -185,7 +164,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.Na
 				break;
 			case 3:
 				v = new SpeakersPage(this);
-				mColor = getResources().getColor(R.color.section2);
+				mColor = getResources().getColor(R.color.section5);
 				break;
 			case 4:
 				v = new WallPage(this);
@@ -242,6 +221,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.Na
 				startColor = Color.WHITE;
 			}
 			mNavigationDrawer.setBackgroundColor(mColor);
+			mTintManager.setStatusBarTintColor(mColor);
 			ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), startColor, mColor);
 			colorAnimation.addUpdateListener(new AnimatorUpdateListener() {
 				@Override

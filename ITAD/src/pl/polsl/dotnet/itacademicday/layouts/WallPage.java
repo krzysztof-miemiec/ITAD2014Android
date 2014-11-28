@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import pl.polsl.dotnet.itacademicday.R;
 import pl.polsl.dotnet.itacademicday.core.signalr.SignalRClient;
+import pl.polsl.dotnet.itacademicday.core.signalr.SignalRClient.OnMessage;
 import pl.polsl.dotnet.itacademicday.layouts.MainActivity.FontStyle;
 import android.content.Context;
 import android.text.Editable;
@@ -26,14 +27,13 @@ public class WallPage extends Page {
 
 	private ListView mList;
 	private ArrayAdapter<String> mAdapter;
-	private final ArrayList<String> mMessages = new ArrayList<String>(); //TODO put messages from server here
+	private ArrayList<String> mMessages = new ArrayList<String>();
 
 	private String mCommentAwaitForSubmit, mServerError;
 
-	private SignalRClient signalerClient = null;
-	
+	private SignalRClient mSignalerClient;
+
 	@Override
-<<<<<<< HEAD:ITAD/src/pl/polsl/dotnet/itacademicday/layouts/WallPage.java
 	protected void onCreate(){
 		mCommentAwaitForSubmit = getResources().getString(R.string.await_for_comment_submit);
 		mServerError = getResources().getString(R.string.server_error);
@@ -43,21 +43,16 @@ public class WallPage extends Page {
 		MainActivity.setFont(this, FontStyle.REGULAR);
 		mMessages = new ArrayList<String>();
 		mAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, mMessages);
-=======
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-		
-		signalerClient = new SignalRClient(mMessages);
-		
-		mContext = container.getContext();
-		mCommentAwaitForSubmit = getResources().getString(R.string.await_for_comment_submit);
-		mServerError = getResources().getString(R.string.server_error);
-		final String connectionError = getResources().getString(R.string.connection_error);
-		
-		View rootView = inflater.inflate(R.layout.wall_fragment, container, false);
-		mList = (ListView) rootView.findViewById(R.id.wall_list);
-		MainActivity.setFont(rootView, FontStyle.REGULAR);
-		mAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1, mMessages);
->>>>>>> 690375b671353b7345df928aea632d1c148fe81f:ITAD/src/pl/polsl/dotnet/itacademicday/layouts/WallFragment.java
+
+		mSignalerClient = new SignalRClient(new OnMessage() {
+
+			@Override
+			public void onMessage(String message){
+				mMessages.add(message);
+				mAdapter.notifyDataSetChanged();
+			}
+		});
+
 		mList.setAdapter(mAdapter);
 		final EditText commentEdit = (EditText) findViewById(R.id.commentEdit);
 		final ImageButton commentSubmit = (ImageButton) findViewById(R.id.commentSubmit);
@@ -89,24 +84,22 @@ public class WallPage extends Page {
 				}
 			}
 		});
-<<<<<<< HEAD:ITAD/src/pl/polsl/dotnet/itacademicday/layouts/WallPage.java
-=======
-		
-		return rootView;
->>>>>>> 690375b671353b7345df928aea632d1c148fe81f:ITAD/src/pl/polsl/dotnet/itacademicday/layouts/WallFragment.java
+
+		//TODO dodawanie do listy
+		mMessages.add("dupa");
+		mAdapter.notifyDataSetChanged();
 	}
 
 	/** Return true if success - message sent to server correctly*/
 	public boolean onSubmit(String comment){
 		boolean success;
-
-		//TODO replace "processing" with server communication code
-
-		//"processing"
-		
-		signalerClient.sendMessage(comment);
+		try {
+			mSignalerClient.sendMessage(comment);
+			success = true;
+		} catch (Exception e) {
+			success = false;
+		}
 		onRefresh();
-		success = true;
 
 		Toast.makeText(getContext(), success ? mCommentAwaitForSubmit : mServerError, Toast.LENGTH_LONG).show();
 		return success;
