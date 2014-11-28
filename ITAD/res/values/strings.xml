@@ -6,7 +6,7 @@
     <string name="title_section2">Agenda</string>
     <string name="title_section3">Wall</string>
     <string name="title_section4">Sponsorzy</string>
-    <string name="title_section5">Wykładowcy</string>
+    <string name="title_section5">Prelegenci</string>
     <string name="navigation_drawer_open">Otwarcie nawigacji</string>
     <string name="navigation_drawer_close">Zamknięcie nawigacji</string>
     <string name="time_left">Czas do konferencji</string>

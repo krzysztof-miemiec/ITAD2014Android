@@ -32,10 +32,10 @@ public class SpeakersPage extends DynamicContentPage<SpeakersEntity> {
 
 	@Override
 	protected View getView(SpeakersEntity l, LayoutInflater inflater, View convertView){
-		SpeakerViewTag t;
+		final SpeakerViewTag t;
 		if (convertView == null) {
 			ViewGroup v = (ViewGroup) inflater.inflate(R.layout.speaker, getListView(), false);
-			MainActivity.setFont(v, FontStyle.REGULAR);
+			MainActivity.setFont(v, FontStyle.SEMILIGHT);
 			t = new SpeakerViewTag();
 			t.iconView = (ImageView) v.findViewById(R.id.icon);
 			t.nameView = (TextView) v.findViewById(R.id.name);

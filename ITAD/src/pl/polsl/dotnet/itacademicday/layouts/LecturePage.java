@@ -54,9 +54,9 @@ public class LecturePage extends Page {
 		nameView.setText(lecture.getName());
 		lecturerView.setText(lecture.getLecturer());
 		timeView.setText(lecture.getStartTimeText() + " - " + lecture.getEndTimeText());
+		descriptionView.setText(lecture.getAbout());
 		Bitmaps.loadNetBitmapAsync(lecture.getIconURL(), imageView.getWidth(), imageView.getHeight(), true)
 				.result(imageView).start();
-		descriptionView.setText(lecture.getAbout());
 	}
 
 }

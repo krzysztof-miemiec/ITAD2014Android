@@ -7,7 +7,9 @@ import pl.polsl.dotnet.itacademicday.core.DataFactory;
 import pl.polsl.dotnet.itacademicday.core.entities.SponsorsEntity;
 import pl.polsl.dotnet.itacademicday.layouts.MainActivity.FontStyle;
 import pl.polsl.dotnet.itacademicday.utils.Bitmaps;
+import pl.polsl.dotnet.itacademicday.utils.Bitmaps.RequestResult;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,10 +34,10 @@ public class SponsorsPage extends DynamicContentPage<SponsorsEntity> {
 
 	@Override
 	protected View getView(SponsorsEntity l, LayoutInflater inflater, View convertView){
-		SponsorViewTag t;
+		final SponsorViewTag t;
 		if (convertView == null) {
 			ViewGroup v = (ViewGroup) inflater.inflate(R.layout.sponsor, getListView(), false);
-			MainActivity.setFont(v, FontStyle.REGULAR);
+			MainActivity.setFont(v, FontStyle.SEMILIGHT);
 			t = new SponsorViewTag();
 			t.iconView = (ImageView) v.findViewById(R.id.icon);
 			t.nameView = (TextView) v.findViewById(R.id.name);
@@ -45,8 +47,20 @@ public class SponsorsPage extends DynamicContentPage<SponsorsEntity> {
 		} else {
 			t = (SponsorViewTag) convertView.getTag();
 		}
+		t.nameView.setVisibility(VISIBLE);
 		Bitmaps.loadNetBitmapAsync(l.getUrlLogo(), t.iconView.getWidth(), t.iconView.getHeight(), true)
-				.result(t.iconView).start();
+				.result(t.iconView).result(new RequestResult() {
+					@Override
+					public void onBitmap(Bitmap b){
+						if (b != null)
+							t.nameView.post(new Runnable() {
+								@Override
+								public void run(){
+									t.nameView.setVisibility(GONE);
+								}
+							});
+					}
+				}).start();
 		t.nameView.setText(l.getName());
 		t.descriptionView.setText(l.getAbout());
 

@@ -6,22 +6,16 @@
     android:background="@color/background"
     android:orientation="vertical" >
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/subtitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/section2"
         android:minHeight="@dimen/subtitle_height"
-        android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/subtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/subtitle_padding"
-            android:text="@string/title_section2"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/subtitle_font" />
-    </LinearLayout>
+        android:padding="@dimen/subtitle_padding"
+        android:text="@string/title_section2"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/subtitle_font" />
 
     <FrameLayout
         android:layout_width="match_parent"

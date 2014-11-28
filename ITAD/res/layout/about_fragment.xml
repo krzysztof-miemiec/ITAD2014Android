@@ -40,7 +40,7 @@
             android:background="#f5f5f5"
             android:singleLine="false"
             android:textColor="@color/text_color"
-            android:textSize="16sp" />
+            android:textSize="@dimen/descr_font" />
     </LinearLayout>
 
 </com.nirhart.parallaxscroll.views.ParallaxScrollView>

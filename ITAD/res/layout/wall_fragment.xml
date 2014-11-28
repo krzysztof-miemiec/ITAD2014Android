@@ -3,8 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/background">
+    android:background="@color/background"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/section3"
+        android:minHeight="@dimen/subtitle_height"
+        android:padding="@dimen/subtitle_padding"
+        android:text="@string/title_section3"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/subtitle_font" />
 
     <ListView
         android:id="@+id/wall_list"
@@ -16,10 +27,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:orientation="horizontal" 
-        android:background="#fff">
+        android:background="#fff"
+        android:orientation="horizontal" >
 
-        <EditText android:id="@+id/commentEdit"
+        <EditText
+            android:id="@+id/commentEdit"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_weight="1"
@@ -31,7 +43,6 @@
             android:layout_height="48dp"
             android:background="@drawable/button_flat"
             android:src="@drawable/ic_insert_comment_black_24dp" />
-
     </LinearLayout>
 
 </LinearLayout>

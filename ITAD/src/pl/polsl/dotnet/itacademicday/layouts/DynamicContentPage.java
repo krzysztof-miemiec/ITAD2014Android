@@ -21,6 +21,8 @@ public abstract class DynamicContentPage<T> extends Page {
 
 		mAdapter = new GenericAdapter();
 		mList.setAdapter(mAdapter);
+		mList.invalidateViews();
+		mAdapter.notifyDataSetChanged();
 		loadData();
 	}
 

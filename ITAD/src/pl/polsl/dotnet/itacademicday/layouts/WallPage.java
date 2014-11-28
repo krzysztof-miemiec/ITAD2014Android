@@ -40,7 +40,9 @@ public class WallPage extends Page {
 		final String connectionError = getResources().getString(R.string.connection_error);
 
 		mList = (ListView) findViewById(R.id.wall_list);
-		MainActivity.setFont(this, FontStyle.REGULAR);
+		MainActivity.setFont(this, FontStyle.SEMILIGHT);
+		MainActivity.setFont(findViewById(R.id.subtitle), FontStyle.LIGHT);
+
 		mMessages = new ArrayList<String>();
 		mAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, mMessages);
 
