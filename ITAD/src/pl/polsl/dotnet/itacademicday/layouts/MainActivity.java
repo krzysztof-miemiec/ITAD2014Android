@@ -81,7 +81,15 @@ public class MainActivity extends ActionBarActivity implements NavigationView.Na
 		super.onCreate(savedInstanceState);
 
 		DataFactory.setSharedPreferences(getPreferences(0));
+<<<<<<< HEAD
 		mCacheDir = new File(getCacheDir().getPath());
+=======
+		
+		final String cachePath = ((Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED || !Environment
+				.isExternalStorageRemovable()) && getExternalCacheDir() != null) ? getExternalCacheDir()
+				.getPath() : getCacheDir().getPath();
+		mCacheDir = new File(cachePath);
+>>>>>>> 690375b671353b7345df928aea632d1c148fe81f
 		Bitmaps.setup();
 
 		setContentView(R.layout.activity_main);
