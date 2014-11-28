@@ -1,39 +1,39 @@
-<com.nirhart.parallaxscroll.views.ParallaxScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true"
-    app:parallax_views_num="2" >
-
-    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:background="@color/background" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="@dimen/subtitle_height"
             android:background="@color/section4"
+            android:minHeight="@dimen/subtitle_height"
             android:orientation="vertical" >
 
-            <TextView
+            <TextView android:id="@+id/subtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
+                android:padding="@dimen/subtitle_padding"
                 android:text="@string/title_section4"
                 android:textColor="@android:color/white"
-                android:textSize="30sp" />
+                android:textSize="@dimen/subtitle_font" />
         </LinearLayout>
 
-        <ListView
-            android:id="@+id/sponsors_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#f5f5f5"
-            android:divider="#0000" >
-        </ListView>
+         <com.handmark.pulltorefresh.library.PullToRefreshListView
+                android:id="@+id/sponsors_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#fff"
+                android:divider="#444" />
+         <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:indeterminateOnly="true"
+                android:visibility="gone" />
     </LinearLayout>
-
-</com.nirhart.parallaxscroll.views.ParallaxScrollView>

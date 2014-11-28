@@ -47,7 +47,7 @@ public class IndicatorLayout extends FrameLayout implements AnimationListener {
 		super(context);
 		mArrowImageView = new ImageView(context);
 
-		Drawable arrowD = getResources().getDrawable(R.drawable.indicator_arrow);
+		Drawable arrowD = getResources().getDrawable(R.drawable.ic_arrow_drop_down_black_24dp);
 		mArrowImageView.setImageDrawable(arrowD);
 
 		final int padding = getResources().getDimensionPixelSize(R.dimen.indicator_internal_padding);
@@ -96,7 +96,7 @@ public class IndicatorLayout extends FrameLayout implements AnimationListener {
 
 	}
 
-	public final boolean isVisible() {
+	public final boolean isVisible(){
 		Animation currentAnim = getAnimation();
 		if (null != currentAnim) {
 			return mInAnim == currentAnim;
@@ -105,17 +105,17 @@ public class IndicatorLayout extends FrameLayout implements AnimationListener {
 		return getVisibility() == View.VISIBLE;
 	}
 
-	public void hide() {
+	public void hide(){
 		startAnimation(mOutAnim);
 	}
 
-	public void show() {
+	public void show(){
 		mArrowImageView.clearAnimation();
 		startAnimation(mInAnim);
 	}
 
 	@Override
-	public void onAnimationEnd(Animation animation) {
+	public void onAnimationEnd(Animation animation){
 		if (animation == mOutAnim) {
 			mArrowImageView.clearAnimation();
 			setVisibility(View.GONE);
@@ -127,20 +127,20 @@ public class IndicatorLayout extends FrameLayout implements AnimationListener {
 	}
 
 	@Override
-	public void onAnimationRepeat(Animation animation) {
+	public void onAnimationRepeat(Animation animation){
 		// NO-OP
 	}
 
 	@Override
-	public void onAnimationStart(Animation animation) {
+	public void onAnimationStart(Animation animation){
 		setVisibility(View.VISIBLE);
 	}
 
-	public void releaseToRefresh() {
+	public void releaseToRefresh(){
 		mArrowImageView.startAnimation(mRotateAnimation);
 	}
 
-	public void pullToRefresh() {
+	public void pullToRefresh(){
 		mArrowImageView.startAnimation(mResetRotateAnimation);
 	}
 

@@ -54,6 +54,7 @@ public class AsyncBitmapRequest {
 									if (errorResource != 0)
 										iv.setImageResource(errorResource);
 								}
+								iv.invalidate();
 							}
 						});
 					}

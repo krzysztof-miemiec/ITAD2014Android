@@ -56,7 +56,7 @@ public class FlipLoadingLayout extends LoadingLayout {
 	}
 
 	@Override
-	protected void onLoadingDrawableSet(Drawable imageDrawable) {
+	protected void onLoadingDrawableSet(Drawable imageDrawable){
 		if (null != imageDrawable) {
 			final int dHeight = imageDrawable.getIntrinsicHeight();
 			final int dWidth = imageDrawable.getIntrinsicWidth();
@@ -83,12 +83,12 @@ public class FlipLoadingLayout extends LoadingLayout {
 	}
 
 	@Override
-	protected void onPullImpl(float scaleOfLayout) {
+	protected void onPullImpl(float scaleOfLayout){
 		// NO-OP
 	}
 
 	@Override
-	protected void pullToRefreshImpl() {
+	protected void pullToRefreshImpl(){
 		// Only start reset Animation, we've previously show the rotate anim
 		if (mRotateAnimation == mHeaderImage.getAnimation()) {
 			mHeaderImage.startAnimation(mResetRotateAnimation);
@@ -96,30 +96,30 @@ public class FlipLoadingLayout extends LoadingLayout {
 	}
 
 	@Override
-	protected void refreshingImpl() {
+	protected void refreshingImpl(){
 		mHeaderImage.clearAnimation();
 		mHeaderImage.setVisibility(View.INVISIBLE);
 		mHeaderProgress.setVisibility(View.VISIBLE);
 	}
 
 	@Override
-	protected void releaseToRefreshImpl() {
+	protected void releaseToRefreshImpl(){
 		mHeaderImage.startAnimation(mRotateAnimation);
 	}
 
 	@Override
-	protected void resetImpl() {
+	protected void resetImpl(){
 		mHeaderImage.clearAnimation();
 		mHeaderProgress.setVisibility(View.GONE);
 		mHeaderImage.setVisibility(View.VISIBLE);
 	}
 
 	@Override
-	protected int getDefaultDrawableResId() {
-		return R.drawable.default_ptr_flip;
+	protected int getDefaultDrawableResId(){
+		return R.drawable.ic_arrow_drop_down_black_24dp;
 	}
 
-	private float getDrawableRotationAngle() {
+	private float getDrawableRotationAngle(){
 		float angle = 0f;
 		switch (mMode) {
 			case PULL_FROM_END:

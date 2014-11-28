@@ -55,14 +55,16 @@ public class RotateLoadingLayout extends LoadingLayout {
 		mRotateAnimation.setRepeatMode(Animation.RESTART);
 	}
 
-	public void onLoadingDrawableSet(Drawable imageDrawable) {
+	@Override
+	public void onLoadingDrawableSet(Drawable imageDrawable){
 		if (null != imageDrawable) {
 			mRotationPivotX = Math.round(imageDrawable.getIntrinsicWidth() / 2f);
 			mRotationPivotY = Math.round(imageDrawable.getIntrinsicHeight() / 2f);
 		}
 	}
 
-	protected void onPullImpl(float scaleOfLayout) {
+	@Override
+	protected void onPullImpl(float scaleOfLayout){
 		float angle;
 		if (mRotateDrawableWhilePulling) {
 			angle = scaleOfLayout * 90f;
@@ -75,17 +77,17 @@ public class RotateLoadingLayout extends LoadingLayout {
 	}
 
 	@Override
-	protected void refreshingImpl() {
+	protected void refreshingImpl(){
 		mHeaderImage.startAnimation(mRotateAnimation);
 	}
 
 	@Override
-	protected void resetImpl() {
+	protected void resetImpl(){
 		mHeaderImage.clearAnimation();
 		resetImageRotation();
 	}
 
-	private void resetImageRotation() {
+	private void resetImageRotation(){
 		if (null != mHeaderImageMatrix) {
 			mHeaderImageMatrix.reset();
 			mHeaderImage.setImageMatrix(mHeaderImageMatrix);
@@ -93,18 +95,18 @@ public class RotateLoadingLayout extends LoadingLayout {
 	}
 
 	@Override
-	protected void pullToRefreshImpl() {
+	protected void pullToRefreshImpl(){
 		// NO-OP
 	}
 
 	@Override
-	protected void releaseToRefreshImpl() {
+	protected void releaseToRefreshImpl(){
 		// NO-OP
 	}
 
 	@Override
-	protected int getDefaultDrawableResId() {
-		return R.drawable.default_ptr_rotate;
+	protected int getDefaultDrawableResId(){
+		return R.drawable.ic_refresh_black_24dp;
 	}
 
 }

@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/card"
     android:minHeight="@dimen/list_item_height"
     android:orientation="horizontal"
     android:padding="8dp" >
@@ -13,6 +12,7 @@
         android:layout_width="@dimen/list_item_height"
         android:layout_height="@dimen/list_item_height"
         android:contentDescription="@string/app_name"
+        android:background="#fff"
         android:scaleType="centerInside" />
 
     <LinearLayout
