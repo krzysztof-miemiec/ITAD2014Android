@@ -7,174 +7,77 @@ import pl.polsl.dotnet.itacademicday.core.DataFactory;
 import pl.polsl.dotnet.itacademicday.core.entities.LecturesEntity;
 import pl.polsl.dotnet.itacademicday.layouts.MainActivity.FontStyle;
 import pl.polsl.dotnet.itacademicday.utils.Bitmaps;
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.os.Bundle;
-import android.os.StrictMode;
-import android.support.v4.app.Fragment;
+import pl.polsl.dotnet.itacademicday.utils.Bitmaps.RequestResult;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class AgendaFragment extends Fragment {
-	/**
-	 * The fragment argument representing the section number for this
-	 * fragment.
-	 */
-	private static final String ARG_SECTION_NUMBER = "section_number";
+public class AgendaFragment extends NetFragment<LecturesEntity> {
 
-	/**
-	 * Returns a new instance of this fragment for the given section
-	 * number.
-	 */
-	public static AgendaFragment newInstance(int sectionNumber){
-		AgendaFragment fragment = new AgendaFragment();
-		Bundle args = new Bundle();
-		args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-		fragment.setArguments(args);
-		return fragment;
-	}
-
-	public AgendaFragment() {
-	}
-
-	private LayoutInflater mInflater;
-	private ListView mList;
-	private AgendaAdapter mAdapter;
-	private ProgressBar mProgressBar;
-
-	public class AgendaAdapter extends BaseAdapter {
-		private ArrayList<LecturesEntity> mAgendaList;
-
-		private class LectureViewTag {
-			ImageView iconView;
-			TextView nameView, lecturerView;
+	@Override
+	public View getView(LecturesEntity l, LayoutInflater inflater,
+			View convertView) {
+		LectureViewTag t;
+		if (convertView == null) {
+			ViewGroup v = (ViewGroup) inflater.inflate(R.layout.lecture,
+					getListView(), false);
+			MainActivity.setFont(v, FontStyle.SEMILIGHT);
+			t = new LectureViewTag();
+			t.iconView = (ImageView) v.findViewById(R.id.icon);
+			t.nameView = (TextView) v.findViewById(R.id.name);
+			t.lecturerView = (TextView) v.findViewById(R.id.lecturer);
+			t.timeView = (TextView) v.findViewById(R.id.time);
+			v.setTag(t);
+			convertView = v;
+		} else {
+			t = (LectureViewTag) convertView.getTag();
 		}
-
-		public AgendaAdapter() {
-			mAgendaList = new ArrayList<LecturesEntity>();
-		}
-
-		@Override
-		public int getCount(){
-			return mAgendaList.size();
-		}
-
-		@Override
-		public LecturesEntity getItem(int position){
-			return mAgendaList.get(position);
-		}
-
-		@Override
-		public long getItemId(int position){
-			return position;
-		}
-
-		public void setData(ArrayList<LecturesEntity> l){
-			if (l != null) {
-				mAgendaList = l;
-				getActivity().runOnUiThread(new Runnable() {
+		final ImageView iv = t.iconView;
+		Bitmaps.loadNetBitmapAsync(l.getIconURL(), t.iconView.getWidth(),
+				t.iconView.getHeight(), true).result(new RequestResult() {
+			@Override
+			public void onBitmap(final Bitmap b) {
+				iv.post(new Runnable() {
 					@Override
-					public void run(){
-						notifyDataSetChanged();
+					public void run() {
+						iv.setImageBitmap(b);
+						iv.invalidate();
 					}
 				});
 			}
-		}
+		}).start();
+		t.nameView.setText(l.getName());
+		t.lecturerView.setText(l.getLecturer());
+		t.timeView.setText(l.getStartTimeText() + " - " + l.getEndTimeText());
 
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent){
-			LectureViewTag t;
-			if (convertView == null) {
-				ViewGroup v = (ViewGroup) mInflater.inflate(R.layout.lecture, mList, false);
-				MainActivity.setFont(v, FontStyle.SEMILIGHT);
-				t = new LectureViewTag();
-				t.iconView = (ImageView) v.findViewById(R.id.icon);
-				t.nameView = (TextView) v.findViewById(R.id.name);
-				t.lecturerView = (TextView) v.findViewById(R.id.lecturer);
-				v.setTag(t);
-				convertView = v;
-			} else {
-				t = (LectureViewTag) convertView.getTag();
-			}
-			LecturesEntity l = getItem(position);
-			Bitmaps.loadNetBitmapAsync(l.getIconURL(), t.iconView.getWidth(), t.iconView.getHeight())
-					.result(t.iconView).start();
-			t.nameView.setText(l.getName());
-			t.lecturerView.setText(l.getLecturer());
-
-			return convertView;
-		}
-	}
-
-	private void setIsLoading(final boolean isLoading){
-		getActivity().runOnUiThread(new Runnable() {
-
-			@Override
-			public void run(){
-				mProgressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-			}
-		});
-	}
-
-	private void errorToast(final Exception e){
-		getActivity().runOnUiThread(new Runnable() {
-
-			@Override
-			public void run(){
-				Toast.makeText(getActivity(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-			}
-		});
+		return convertView;
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-		mInflater = inflater;
-		View rootView = inflater.inflate(R.layout.agenda_fragment, container, false);
-		MainActivity.setFont(rootView, FontStyle.REGULAR);
-		mList = (ListView) rootView.findViewById(R.id.agenda_list);
-		mProgressBar = (ProgressBar) rootView.findViewById(R.id.progress_bar);
-		mAdapter = new AgendaAdapter();
-		mList.setAdapter(mAdapter);
-		Thread thread = new Thread(new Runnable() {
+	protected ArrayList<LecturesEntity> getData() {
+		return DataFactory.getLecturesData();
+	}
 
-			@SuppressLint("NewApi")
-			@Override
-			public void run(){
-				setIsLoading(true);
-				try {
-					if (android.os.Build.VERSION.SDK_INT > 9) {
-						StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-						StrictMode.setThreadPolicy(policy);
-					}
-					mAdapter.setData(DataFactory.getLecturesData());
-				} catch (Exception e) {
-					e.printStackTrace();
-					errorToast(e);
-				}
-				setIsLoading(false);
-			}
-		});
-		thread.start();
+	@Override
+	protected View onCreate(LayoutInflater inflater, ViewGroup container) {
+		View rootView = inflater.inflate(R.layout.agenda_fragment, container,
+				false);
+		MainActivity.setFont(rootView, FontStyle.REGULAR);
+		MainActivity.setFont(rootView.findViewById(R.id.subtitle),
+				FontStyle.LIGHT);
+		setListView((PullToRefreshListView) rootView
+				.findViewById(R.id.agenda_list));
+		setProgressBar((ProgressBar) rootView.findViewById(R.id.progress_bar));
 		return rootView;
 	}
 
-	@Override
-	public void onAttach(Activity activity){
-		super.onAttach(activity);
-	}
-
-	@Override
-	public void onDetach(){
-		super.onDetach();
-	}
 }
