@@ -3,6 +3,7 @@ package pl.polsl.dotnet.itacademicday.layouts;
 import java.util.ArrayList;
 
 import pl.polsl.dotnet.itacademicday.R;
+import pl.polsl.dotnet.itacademicday.core.signalr.SignalRClient;
 import pl.polsl.dotnet.itacademicday.layouts.MainActivity.FontStyle;
 import android.app.Activity;
 import android.content.Context;
@@ -47,22 +48,26 @@ public class WallFragment extends Fragment {
 
 	private ListView mList;
 	private ArrayAdapter<String> mAdapter;
-	private ArrayList<String> mMessages; //TODO put messages from server here
+	private final ArrayList<String> mMessages = new ArrayList<String>(); //TODO put messages from server here
 
 	private Context mContext;
 	private String mCommentAwaitForSubmit, mServerError;
 
+	private SignalRClient signalerClient = null;
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+		
+		signalerClient = new SignalRClient(mMessages);
+		
 		mContext = container.getContext();
 		mCommentAwaitForSubmit = getResources().getString(R.string.await_for_comment_submit);
 		mServerError = getResources().getString(R.string.server_error);
 		final String connectionError = getResources().getString(R.string.connection_error);
-
+		
 		View rootView = inflater.inflate(R.layout.wall_fragment, container, false);
 		mList = (ListView) rootView.findViewById(R.id.wall_list);
 		MainActivity.setFont(rootView, FontStyle.REGULAR);
-		mMessages = new ArrayList<String>();
 		mAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1, mMessages);
 		mList.setAdapter(mAdapter);
 		final EditText commentEdit = (EditText) rootView.findViewById(R.id.commentEdit);
@@ -95,6 +100,7 @@ public class WallFragment extends Fragment {
 				}
 			}
 		});
+		
 		return rootView;
 	}
 
@@ -105,7 +111,8 @@ public class WallFragment extends Fragment {
 		//TODO replace "processing" with server communication code
 
 		//"processing"
-		mMessages.add(comment);
+		
+		signalerClient.sendMessage(comment);
 		onRefresh();
 		success = true;
 

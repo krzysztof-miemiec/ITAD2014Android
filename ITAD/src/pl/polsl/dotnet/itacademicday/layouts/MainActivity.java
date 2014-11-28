@@ -75,6 +75,7 @@ public class MainActivity extends ActionBarActivity implements
 		super.onCreate(savedInstanceState);
 
 		DataFactory.setSharedPreferences(getPreferences(0));
+		
 		final String cachePath = ((Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED || !Environment
 				.isExternalStorageRemovable()) && getExternalCacheDir() != null) ? getExternalCacheDir()
 				.getPath() : getCacheDir().getPath();
