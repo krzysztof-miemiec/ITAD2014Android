@@ -14,10 +14,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -78,12 +77,12 @@ public class AgendaPage extends DynamicContentPage<LecturesEntity> {
 	protected void onCreate(){
 		MainActivity.setFont(this, FontStyle.REGULAR);
 		MainActivity.setFont(findViewById(R.id.subtitle), FontStyle.LIGHT);
-		setListView((PullToRefreshListView) findViewById(R.id.agenda_list));
+		setListView((ListView) findViewById(R.id.agenda_list));
 		getListView().setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id){
 				LecturePage lp = new LecturePage(getContext());
-				lp.setLecture(getItem(position));
+				lp.setLecture(getItem((int) id));
 				((MainActivity) getContext()).setContentPage(lp);
 			}
 

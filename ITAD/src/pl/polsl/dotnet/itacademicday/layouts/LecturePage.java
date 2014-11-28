@@ -51,8 +51,7 @@ public class LecturePage extends Page {
 	}
 
 	public void setLecture(LecturesEntity lecture){
-		if (lecture)
-			nameView.setText(lecture.getName());
+		nameView.setText(lecture.getName());
 		lecturerView.setText(lecture.getLecturer());
 		timeView.setText(lecture.getStartTimeText() + " - " + lecture.getEndTimeText());
 		Bitmaps.loadNetBitmapAsync(lecture.getIconURL(), imageView.getWidth(), imageView.getHeight(), true)

@@ -146,6 +146,9 @@ public class MainActivity extends ActionBarActivity implements NavigationView.Na
 
 	@Override
 	public void onBackPressed(){
+		if (mNavigationDrawer != null && mNavigationDrawer.isDrawerOpen()) {
+			mNavigationDrawer.setDrawerOpen(false);
+		}
 		if (mContentView != null) {
 			if (!mContentView.onBack()) {
 				super.onBackPressed();
@@ -173,10 +176,14 @@ public class MainActivity extends ActionBarActivity implements NavigationView.Na
 				mColor = getResources().getColor(R.color.section2);
 				break;
 			case 3:
+				v = new SpeakersPage(this);
+				mColor = getResources().getColor(R.color.section2);
+				break;
+			case 4:
 				v = new WallPage(this);
 				mColor = getResources().getColor(R.color.section3);
 				break;
-			case 4:
+			case 5:
 				v = new SponsorsPage(this);
 				mColor = getResources().getColor(R.color.section4);
 				break;

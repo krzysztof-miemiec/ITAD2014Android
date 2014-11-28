@@ -81,8 +81,8 @@ public class NavigationView {
 			}
 		});
 		mDrawerListView.setAdapter(new NavigationAdapter(new String[] { c.getString(R.string.title_section1),
-				c.getString(R.string.title_section2), c.getString(R.string.title_section3),
-				c.getString(R.string.title_section4) }));
+				c.getString(R.string.title_section2), c.getString(R.string.title_section5),
+				c.getString(R.string.title_section3), c.getString(R.string.title_section4) }));
 		mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
 		mDrawerListView.setBackgroundColor(MainActivity.getCurrentColor());
 		configureDrawerLayout(drawerLayout);
@@ -90,6 +90,16 @@ public class NavigationView {
 
 	public boolean isDrawerOpen(){
 		return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(mDrawerListView);
+	}
+
+	public void setDrawerOpen(boolean open){
+		if (mDrawerLayout != null) {
+			if (open) {
+				mDrawerLayout.openDrawer(GravityCompat.START);
+			} else {
+				mDrawerLayout.closeDrawers();
+			}
+		}
 	}
 
 	/**

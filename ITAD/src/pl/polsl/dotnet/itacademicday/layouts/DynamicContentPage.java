@@ -14,27 +14,17 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
-
 public abstract class DynamicContentPage<T> extends Page {
 
 	public DynamicContentPage(Context c) {
 		super(c);
 
-		mList.setOnRefreshListener(new OnRefreshListener<ListView>() {
-			@Override
-			public void onRefresh(PullToRefreshBase<ListView> refreshView){
-				loadData();
-			}
-		});
 		mAdapter = new GenericAdapter();
 		mList.setAdapter(mAdapter);
 		loadData();
 	}
 
-	private PullToRefreshListView mList;
+	private ListView mList;
 	private GenericAdapter mAdapter;
 	private ProgressBar mProgressBar;
 
@@ -89,7 +79,6 @@ public abstract class DynamicContentPage<T> extends Page {
 			@Override
 			public void run(){
 				mProgressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-				mList.setRefreshing(isLoading);
 				if (!isLoading) {
 					mAdapter.notifyDataSetChanged();
 				}
@@ -108,11 +97,11 @@ public abstract class DynamicContentPage<T> extends Page {
 
 	protected abstract ArrayList<T> getData();
 
-	protected void setListView(PullToRefreshListView ptrlv){
+	protected void setListView(ListView ptrlv){
 		mList = ptrlv;
 	}
 
-	protected PullToRefreshListView getListView(){
+	protected ListView getListView(){
 		return mList;
 	}
 

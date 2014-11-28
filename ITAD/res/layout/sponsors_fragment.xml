@@ -23,7 +23,7 @@
                 android:textSize="@dimen/subtitle_font" />
         </LinearLayout>
 
-         <com.handmark.pulltorefresh.library.PullToRefreshListView
+         <ListView
                 android:id="@+id/sponsors_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

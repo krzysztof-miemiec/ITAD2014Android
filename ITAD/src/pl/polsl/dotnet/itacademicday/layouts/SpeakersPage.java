@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import pl.polsl.dotnet.itacademicday.R;
 import pl.polsl.dotnet.itacademicday.core.DataFactory;
-import pl.polsl.dotnet.itacademicday.core.entities.SponsorsEntity;
+import pl.polsl.dotnet.itacademicday.core.entities.SpeakersEntity;
 import pl.polsl.dotnet.itacademicday.layouts.MainActivity.FontStyle;
 import pl.polsl.dotnet.itacademicday.utils.Bitmaps;
 import android.content.Context;
@@ -19,36 +19,38 @@ import android.widget.TextView;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class SponsorsPage extends DynamicContentPage<SponsorsEntity> {
+public class SpeakersPage extends DynamicContentPage<SpeakersEntity> {
 
-	public SponsorsPage(Context c) {
+	public SpeakersPage(Context c) {
 		super(c);
 	}
 
-	private class SponsorViewTag {
+	private class SpeakerViewTag {
 		ImageView iconView;
-		TextView nameView, descriptionView;
+		TextView nameView, companyView, descriptionView;
 	}
 
 	@Override
-	protected View getView(SponsorsEntity l, LayoutInflater inflater, View convertView){
-		SponsorViewTag t;
+	protected View getView(SpeakersEntity l, LayoutInflater inflater, View convertView){
+		SpeakerViewTag t;
 		if (convertView == null) {
-			ViewGroup v = (ViewGroup) inflater.inflate(R.layout.sponsor, getListView(), false);
+			ViewGroup v = (ViewGroup) inflater.inflate(R.layout.speaker, getListView(), false);
 			MainActivity.setFont(v, FontStyle.REGULAR);
-			t = new SponsorViewTag();
+			t = new SpeakerViewTag();
 			t.iconView = (ImageView) v.findViewById(R.id.icon);
 			t.nameView = (TextView) v.findViewById(R.id.name);
+			t.companyView = (TextView) v.findViewById(R.id.company);
 			t.descriptionView = (TextView) v.findViewById(R.id.description);
 			v.setTag(t);
 			convertView = v;
 		} else {
-			t = (SponsorViewTag) convertView.getTag();
+			t = (SpeakerViewTag) convertView.getTag();
 		}
-		Bitmaps.loadNetBitmapAsync(l.getUrlLogo(), t.iconView.getWidth(), t.iconView.getHeight(), true)
+		Bitmaps.loadNetBitmapAsync(l.getImageUrl(), t.iconView.getWidth(), t.iconView.getHeight(), true)
 				.result(t.iconView).start();
 		t.nameView.setText(l.getName());
-		t.descriptionView.setText(l.getAbout());
+		t.companyView.setText(l.getCompany());
+		t.descriptionView.setText(l.getBio());
 
 		return convertView;
 	}
@@ -57,18 +59,18 @@ public class SponsorsPage extends DynamicContentPage<SponsorsEntity> {
 	protected void onCreate(){
 		MainActivity.setFont(this, FontStyle.REGULAR);
 		MainActivity.setFont(findViewById(R.id.subtitle), FontStyle.LIGHT);
-		setListView((ListView) findViewById(R.id.sponsors_list));
+		setListView((ListView) findViewById(R.id.lecturers_list));
 		setProgressBar((ProgressBar) findViewById(R.id.progress_bar));
 	}
 
 	@Override
-	protected ArrayList<SponsorsEntity> getData(){
-		return DataFactory.getSponsorsData();
+	protected ArrayList<SpeakersEntity> getData(){
+		return DataFactory.getSpeakersData();
 	}
 
 	@Override
 	protected int getLayoutResourceId(){
-		return R.layout.sponsors_fragment;
+		return R.layout.speakers_fragment;
 	}
 
 	@Override
@@ -76,4 +78,5 @@ public class SponsorsPage extends DynamicContentPage<SponsorsEntity> {
 		((MainActivity) getContext()).setContentPage(new AboutPage(getContext()));
 		return true;
 	}
+
 }

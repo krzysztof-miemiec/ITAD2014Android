@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/background">
+    android:background="@color/background"
+    android:orientation="vertical" >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -16,48 +16,54 @@
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="5dp"
             android:layout_toRightOf="@+id/back"
+            android:padding="5dp"
             android:text="Title"
             android:textColor="@android:color/white"
             android:textSize="28sp" />
 
-        <TextView
-            android:id="@+id/lecturer"
-            android:layout_below="@+id/name"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/subtitle_padding"
-            android:paddingRight="@dimen/subtitle_padding"
-            android:textSize="18sp"
-            android:drawableLeft="@drawable/ic_timer_auto_black_24dp"
-            android:textColor="@android:color/white" />
-        
-        
-        <TextView
-            android:id="@+id/time"
-            android:text="10:30-11:00"
-            android:layout_below="@+id/name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/subtitle_padding"
-            android:paddingRight="@dimen/subtitle_padding"
-            android:textSize="18sp"
-            android:layout_toRightOf="@+id/lecturer"
-            android:drawableLeft="@drawable/ic_av_timer_black_24dp"
-            android:textColor="@android:color/white" />
+            android:orientation="horizontal"
+            android:layout_below="@+id/name">
+
+            <TextView
+                android:id="@+id/lecturer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/ic_timer_auto_black_24dp"
+                android:maxWidth="200dp"
+                android:paddingLeft="@dimen/subtitle_padding"
+                android:paddingRight="@dimen/subtitle_padding"
+                android:singleLine="false"
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/ic_av_timer_black_24dp"
+                android:paddingLeft="@dimen/subtitle_padding"
+                android:paddingRight="@dimen/subtitle_padding"
+                android:text="10:30-11:00"
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
+        </LinearLayout>
 
         <ImageButton
             android:id="@+id/back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:background="@drawable/button_flat"
+            android:padding="10dp"
             android:src="@drawable/ic_arrow_back_black_36dp"
             android:text="Button" />
-
     </RelativeLayout>
 
     <ScrollView
@@ -74,16 +80,16 @@
                 android:id="@+id/image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scaleType="fitCenter"
-                android:background="#fff" />
+                android:background="#fff"
+                android:scaleType="fitCenter" />
 
             <TextView
                 android:id="@+id/description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/activity_horizontal_margin"
-                android:textSize="18sp"
-                android:singleLine="false" />
+                android:singleLine="false"
+                android:textSize="18sp" />
         </LinearLayout>
     </ScrollView>
 
