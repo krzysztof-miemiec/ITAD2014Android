@@ -15,6 +15,8 @@ public class SignalRClient {
 
 	protected HubConnection connection;
 	private static SignalRClient Instance = null;
+	
+	private onMessageReceived received = null;
 
 	private ArrayList<String> wallInfo = new ArrayList<String>();
 
@@ -37,6 +39,9 @@ public class SignalRClient {
 			@SuppressWarnings("unused")
 			public void posted(String message) {
 				wallInfo.add(message);
+				if(received != null){
+					received.onMessageReceive(message);
+				}
 			}
 		});
 
@@ -61,5 +66,13 @@ public class SignalRClient {
 
 	public ArrayList<String> getWallInfo() {
 		return wallInfo;
+	}
+	
+	public void setReceiver(onMessageReceived received){
+		this.received = received;
+	}
+	
+	public interface onMessageReceived{
+		public void onMessageReceive(String message);
 	}
 }

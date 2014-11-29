@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import pl.polsl.dotnet.itacademicday.R;
 import pl.polsl.dotnet.itacademicday.core.signalr.SignalRClient;
+import pl.polsl.dotnet.itacademicday.core.signalr.SignalRClient.onMessageReceived;
 import pl.polsl.dotnet.itacademicday.layouts.MainActivity.FontStyle;
 import android.content.Context;
 import android.graphics.Color;
@@ -103,6 +104,18 @@ public class WallPage extends Page {
 		mAdapter = new WallAdapter();
 		mList.setAdapter(mAdapter);
 		mSignalerClient = SignalRClient.getInstance();
+		mSignalerClient.setReceiver(new onMessageReceived() {
+			
+			@Override
+			public void onMessageReceive(String message) {
+				mAdapter.put(message);
+				
+			}
+		});
+		
+		for(String info:mSignalerClient.getWallInfo()){
+			mAdapter.put(info);
+		}
 
 		final EditText commentEdit = (EditText) findViewById(R.id.commentEdit);
 		final ImageButton commentSubmit = (ImageButton) findViewById(R.id.commentSubmit);
@@ -134,9 +147,6 @@ public class WallPage extends Page {
 				}
 			}
 		});
-
-		//TODO dodawanie do listy
-		mAdapter.put("dupa");
 	}
 
 	/** Return true if success - message sent to server correctly*/
