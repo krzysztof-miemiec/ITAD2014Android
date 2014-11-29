@@ -13,8 +13,8 @@ import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -36,7 +36,7 @@ public class SponsorsPage extends DynamicContentPage<SponsorsEntity> {
 	protected View getView(SponsorsEntity l, LayoutInflater inflater, View convertView){
 		final SponsorViewTag t;
 		if (convertView == null) {
-			ViewGroup v = (ViewGroup) inflater.inflate(R.layout.sponsor, getListView(), false);
+			ViewGroup v = (ViewGroup) inflater.inflate(R.layout.sponsor, getGridView(), false);
 			MainActivity.setFont(v, FontStyle.SEMILIGHT);
 			t = new SponsorViewTag();
 			t.iconView = (ImageView) v.findViewById(R.id.icon);
@@ -71,8 +71,9 @@ public class SponsorsPage extends DynamicContentPage<SponsorsEntity> {
 	protected void onCreate(){
 		MainActivity.setFont(this, FontStyle.REGULAR);
 		MainActivity.setFont(findViewById(R.id.subtitle), FontStyle.LIGHT);
-		setListView((ListView) findViewById(R.id.sponsors_list));
+		setGridView((GridView) findViewById(R.id.sponsors_grid));
 		setProgressBar((ProgressBar) findViewById(R.id.progress_bar));
+		setSubheader((TextView) findViewById(R.id.subtitle));
 	}
 
 	@Override

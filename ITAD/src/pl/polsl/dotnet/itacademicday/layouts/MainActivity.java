@@ -17,14 +17,16 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
@@ -44,6 +46,7 @@ public class MainActivity extends Activity implements NavigationView.NavigationD
 	private static NavigationView mNavigationDrawer;
 
 	private static int mColor;
+	private static int mCurrentPosition;
 
 	private static ConnectivityManager mConManager;
 	private static Typeface regular, light, semilight;
@@ -54,6 +57,7 @@ public class MainActivity extends Activity implements NavigationView.NavigationD
 	private static WorkerThread mWorker;
 	private static File mCacheDir;
 	private SystemBarTintManager mTintManager;
+	private View mRootLayout;
 
 	public static WorkerThread getWorker(){
 		if (mWorker == null) {
@@ -86,21 +90,28 @@ public class MainActivity extends Activity implements NavigationView.NavigationD
 
 		setContentView(R.layout.activity_main);
 
-		mTintManager = new SystemBarTintManager(this);
-		mTintManager.setStatusBarTintEnabled(true);
-		SystemBarConfig config = mTintManager.getConfig();
-		findViewById(R.id.root_layout).setPadding(0, config.getPixelInsetTop(false), config.getPixelInsetRight(),
-				config.getPixelInsetBottom());
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+			Window w = getWindow();
+
+			w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
+					WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+			mTintManager = new SystemBarTintManager(this);
+			mTintManager.setStatusBarTintEnabled(true);
+			mTintManager.setTintAlpha(1f);
+			mRootLayout = findViewById(R.id.root_layout);
+			SystemBarConfig config = mTintManager.getConfig();
+			mRootLayout.setPadding(0, config.getPixelInsetTop(false), config.getPixelInsetRight(),
+					config.getPixelInsetBottom());
+		}
 
 		mHeader = (ViewGroup) findViewById(R.id.action_bar_layout);
 		mTitleView = (TextView) mHeader.findViewById(R.id.action_bar_title);
-		mTitleView.setTypeface(light);
-		final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
 		ImageButton drawerButton = (ImageButton) mHeader.findViewById(R.id.action_bar_drawer_button);
 		drawerButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v){
-				drawerLayout.openDrawer(Gravity.LEFT);
+				mNavigationDrawer.setDrawerOpen(!mNavigationDrawer.isDrawerOpen());
 			}
 		});
 
@@ -108,6 +119,7 @@ public class MainActivity extends Activity implements NavigationView.NavigationD
 		regular = Typeface.createFromAsset(getAssets(), "Segoe.ttf");
 		light = Typeface.createFromAsset(getAssets(), "SegoeLight.ttf");
 		semilight = Typeface.createFromAsset(getAssets(), "SegoeSemilight.ttf");
+		mTitleView.setTypeface(light);
 		mNavigationDrawer = new NavigationView(this, (ListView) findViewById(R.id.navigation_drawer),
 				(DrawerLayout) findViewById(R.id.drawer_layout));
 		mNavigationDrawer.setCallbacks(this);
@@ -149,33 +161,36 @@ public class MainActivity extends Activity implements NavigationView.NavigationD
 
 	@Override
 	public void onNavigationDrawerItemSelected(int position){
-		if (mContentHolder == null)
-			mContentHolder = (FrameLayout) findViewById(R.id.container);
 		position++;
-		Page v = null;
-		switch (position) {
-			case 1:
-				v = new AboutPage(this);
-				mColor = getResources().getColor(R.color.section1);
-				break;
-			case 2:
-				v = new AgendaPage(this);
-				mColor = getResources().getColor(R.color.section2);
-				break;
-			case 3:
-				v = new SpeakersPage(this);
-				mColor = getResources().getColor(R.color.section5);
-				break;
-			case 4:
-				v = new WallPage(this);
-				mColor = getResources().getColor(R.color.section3);
-				break;
-			case 5:
-				v = new SponsorsPage(this);
-				mColor = getResources().getColor(R.color.section4);
-				break;
+		if (mCurrentPosition != position) {
+			Page v = null;
+			if (mContentHolder == null)
+				mContentHolder = (FrameLayout) findViewById(R.id.container);
+			mCurrentPosition = position;
+			switch (position) {
+				case 1:
+					v = new AboutPage(this);
+					mColor = getResources().getColor(R.color.section1);
+					break;
+				case 2:
+					v = new AgendaPage(this);
+					mColor = getResources().getColor(R.color.section2);
+					break;
+				case 3:
+					v = new SpeakersPage(this);
+					mColor = getResources().getColor(R.color.section5);
+					break;
+				case 4:
+					v = new WallPage(this);
+					mColor = getResources().getColor(R.color.section3);
+					break;
+				case 5:
+					v = new SponsorsPage(this);
+					mColor = getResources().getColor(R.color.section4);
+					break;
+			}
+			setContentPage(v);
 		}
-		setContentPage(v);
 	}
 
 	public void setContentPage(final Page newPage){
@@ -210,6 +225,13 @@ public class MainActivity extends Activity implements NavigationView.NavigationD
 	@Override
 	public void onConfigurationChanged(Configuration newConfig){
 		super.onConfigurationChanged(newConfig);
+		if (mContentView != null)
+			mContentView.onOrientationChange(newConfig.orientation);
+		if (mTintManager != null && mRootLayout != null) {
+			SystemBarConfig config = mTintManager.getConfig();
+			mRootLayout.setPadding(0, config.getPixelInsetTop(false), config.getPixelInsetRight(),
+					config.getPixelInsetBottom());
+		}
 	}
 
 	public void refreshColors(){
@@ -221,7 +243,8 @@ public class MainActivity extends Activity implements NavigationView.NavigationD
 				startColor = Color.WHITE;
 			}
 			mNavigationDrawer.setBackgroundColor(mColor);
-			mTintManager.setStatusBarTintColor(mColor);
+			if (mTintManager != null)
+				mTintManager.setTintColor(mColor);
 			ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), startColor, mColor);
 			colorAnimation.addUpdateListener(new AnimatorUpdateListener() {
 				@Override

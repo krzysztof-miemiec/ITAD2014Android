@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/section3"
-        android:minHeight="@dimen/subtitle_height"
         android:padding="@dimen/subtitle_padding"
         android:text="@string/title_section3"
         android:textColor="@android:color/white"
@@ -24,10 +23,10 @@
         android:layout_weight="1"
         android:divider="#0000" />
 
-    <LinearLayout
+    <LinearLayout android:id="@+id/bottom_bar"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="#fff"
+        android:background="@color/section3"
         android:orientation="horizontal" >
 
         <EditText

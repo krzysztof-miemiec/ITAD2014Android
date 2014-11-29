@@ -11,8 +11,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -34,7 +34,7 @@ public class SpeakersPage extends DynamicContentPage<SpeakersEntity> {
 	protected View getView(SpeakersEntity l, LayoutInflater inflater, View convertView){
 		final SpeakerViewTag t;
 		if (convertView == null) {
-			ViewGroup v = (ViewGroup) inflater.inflate(R.layout.speaker, getListView(), false);
+			ViewGroup v = (ViewGroup) inflater.inflate(R.layout.speaker, getGridView(), false);
 			MainActivity.setFont(v, FontStyle.SEMILIGHT);
 			t = new SpeakerViewTag();
 			t.iconView = (ImageView) v.findViewById(R.id.icon);
@@ -59,8 +59,9 @@ public class SpeakersPage extends DynamicContentPage<SpeakersEntity> {
 	protected void onCreate(){
 		MainActivity.setFont(this, FontStyle.REGULAR);
 		MainActivity.setFont(findViewById(R.id.subtitle), FontStyle.LIGHT);
-		setListView((ListView) findViewById(R.id.lecturers_list));
+		setGridView((GridView) findViewById(R.id.lecturers_grid));
 		setProgressBar((ProgressBar) findViewById(R.id.progress_bar));
+		setSubheader((TextView) findViewById(R.id.subtitle));
 	}
 
 	@Override

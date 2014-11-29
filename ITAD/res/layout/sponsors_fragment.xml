@@ -11,14 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/section4"
-        android:minHeight="@dimen/subtitle_height"
         android:padding="@dimen/subtitle_padding"
         android:text="@string/title_section4"
         android:textColor="@android:color/white"
         android:textSize="@dimen/subtitle_font" />
 
-    <ListView
-        android:id="@+id/sponsors_list"
+    <GridView
+        android:id="@+id/sponsors_grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#fff"
