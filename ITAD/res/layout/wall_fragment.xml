@@ -34,6 +34,8 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_weight="1"
+            android:textColor="#fff"
+            android:textColorHint="#ddd"
             android:hint="@string/comment" />
 
         <ImageButton
