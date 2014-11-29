@@ -80,4 +80,8 @@ public class SpeakersPage extends DynamicContentPage<SpeakersEntity> {
 		return true;
 	}
 
+	@Override
+	protected int getGridMaxItemHeight(){
+		return (int) getResources().getDimension(R.dimen.max_grid_item_height);
+	}
 }

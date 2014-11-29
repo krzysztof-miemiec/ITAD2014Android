@@ -7,6 +7,7 @@
     <string name="title_section3">Wall</string>
     <string name="title_section4">Sponsorzy</string>
     <string name="title_section5">Prelegenci</string>
+    <string name="title_section6">Zarejestruj się</string>
     <string name="navigation_drawer_open">Otwarcie nawigacji</string>
     <string name="navigation_drawer_close">Zamknięcie nawigacji</string>
     <string name="time_left">Czas do konferencji</string>
@@ -27,5 +28,6 @@
     <string name="comment">Skomentuj</string>
     <string name="connection_error">Wystąpił bład połączenia. Sprawdź czy masz połączenie z Internetem i spróbuj ponownie.</string>
     <string name="server_error">Wystąpił błąd komunikacji. Spróbuj ponownie później.</string>
-<string name="await_for_comment_submit">Twój komentarz został wysłany! Po moderacji zostanie wyświetlony na wallu.</string>
+    <string name="await_for_comment_submit">Twój komentarz został wysłany! Po moderacji zostanie wyświetlony na wallu.</string>
+
 </resources>

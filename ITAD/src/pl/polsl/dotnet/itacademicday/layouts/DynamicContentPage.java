@@ -76,7 +76,9 @@ public abstract class DynamicContentPage<T> extends Page {
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent){
-			return DynamicContentPage.this.getView(getItem(position), LayoutInflater.from(getContext()), convertView);
+			View v = DynamicContentPage.this.getView(getItem(position), LayoutInflater.from(getContext()), convertView);
+			adjustViewHeight(v);
+			return v;
 		}
 	}
 
@@ -151,8 +153,33 @@ public abstract class DynamicContentPage<T> extends Page {
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh){
 		super.onSizeChanged(w, h, oldw, oldh);
-		getGridView().setNumColumns(
-				(int) Math.floor(Math.max(1, w / getResources().getDimension(R.dimen.column_width))));
+		GridView gv = getGridView();
+		if (gv != null) {
+			int columns = (int) Math.floor(Math.max(1, w / getResources().getDimension(R.dimen.column_width)));
+			gv.setNumColumns(columns);
+			for (int i = 0; i < gv.getChildCount(); i++) {
+				adjustViewHeight(getChildAt(i));
+			}
+			mAdapter.notifyDataSetChanged();
+			gv.invalidateViews();
+		}
+	}
+
+	private void adjustViewHeight(View v){
+		GridView.LayoutParams lp = (GridView.LayoutParams) v.getLayoutParams();
+		if (mGrid.getNumColumns() == 1) {
+			if (lp.height != LayoutParams.WRAP_CONTENT) {
+				lp.height = LayoutParams.WRAP_CONTENT;
+				v.setLayoutParams(lp);
+			}
+		} else {
+			int gh = getGridMaxItemHeight();
+			if (lp.height != gh) {
+				lp.height = gh;
+				v.setLayoutParams(lp);
+			}
+		}
+
 	}
 
 	@Override
@@ -160,6 +187,10 @@ public abstract class DynamicContentPage<T> extends Page {
 		if (mSubheader != null) {
 			mSubheader.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.subtitle_font));
 		}
+	}
+
+	protected int getGridMaxItemHeight(){
+		return (int) getResources().getDimension(R.dimen.max_grid_item_height);
 	}
 
 	@Override
