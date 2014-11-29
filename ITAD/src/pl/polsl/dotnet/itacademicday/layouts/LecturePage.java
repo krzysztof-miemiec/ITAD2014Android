@@ -5,7 +5,9 @@ import pl.polsl.dotnet.itacademicday.core.entities.LecturesEntity;
 import pl.polsl.dotnet.itacademicday.layouts.MainActivity.FontStyle;
 import pl.polsl.dotnet.itacademicday.utils.Bitmaps;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Color;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -16,12 +18,17 @@ public class LecturePage extends Page {
 	private TextView nameView, timeView, sponsorView, lecturerView, descriptionView;
 	private ImageView imageView;
 
+	private LecturesEntity mLecture;
+
 	public LecturePage(Context c) {
 		super(c);
 	}
 
 	@Override
 	protected int getLayoutResourceId(){
+		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+			return R.layout.lecture_expanded_horizontal;
+		}
 		return R.layout.lecture_expanded;
 	}
 
@@ -52,6 +59,7 @@ public class LecturePage extends Page {
 	}
 
 	public void setLecture(LecturesEntity lecture){
+		mLecture = lecture;
 		nameView.setText(lecture.getName());
 		lecturerView.setText(lecture.getLecturer());
 		sponsorView.setText(lecture.getSponsor());
@@ -61,4 +69,12 @@ public class LecturePage extends Page {
 				.result(imageView).start();
 	}
 
+	@Override
+	public void onOrientationChange(int orientation){
+		super.onOrientationChange(orientation);
+		removeViewAt(0);
+		LayoutInflater.from(getContext()).inflate(getLayoutResourceId(), this, true);
+		onCreate();
+		setLecture(mLecture);
+	}
 }

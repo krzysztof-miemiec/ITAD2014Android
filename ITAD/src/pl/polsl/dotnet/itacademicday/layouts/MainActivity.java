@@ -9,6 +9,7 @@ import pl.polsl.dotnet.itacademicday.utils.WorkerThread;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -17,6 +18,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -162,6 +164,11 @@ public class MainActivity extends Activity implements NavigationView.NavigationD
 	@Override
 	public void onNavigationDrawerItemSelected(int position){
 		position++;
+		if (position == 6) { //Register and show about page
+			Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://bit.ly/itadpolsl"));
+			startActivity(browserIntent);
+			position = 1;
+		}
 		if (mCurrentPosition != position) {
 			Page v = null;
 			if (mContentHolder == null)

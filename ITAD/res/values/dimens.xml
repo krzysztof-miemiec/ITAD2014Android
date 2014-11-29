@@ -22,4 +22,8 @@
     <dimen name="column_width">250dp</dimen>
 
     <dimen name="wall_msg_padding">6dp</dimen>
+    
+    <dimen name="max_grid_item_height">160dp</dimen>
+        <dimen name="max_speaker_grid_item_height">300dp</dimen>
+ 
 </resources>

@@ -48,12 +48,15 @@ public class SponsorsPage extends DynamicContentPage<SponsorsEntity> {
 			t = (SponsorViewTag) convertView.getTag();
 		}
 		t.nameView.setVisibility(VISIBLE);
+		t.nameView.setText(l.getName());
+		t.descriptionView.setText(l.getAbout());
+		t.iconView.setImageBitmap(null);
 		Bitmaps.loadNetBitmapAsync(l.getUrlLogo(), t.iconView.getWidth(), t.iconView.getHeight(), true)
 				.result(t.iconView).result(new RequestResult() {
 					@Override
 					public void onBitmap(Bitmap b){
 						if (b != null)
-							t.nameView.post(new Runnable() {
+							((MainActivity) getContext()).runOnUiThread(new Runnable() {
 								@Override
 								public void run(){
 									t.nameView.setVisibility(GONE);
@@ -61,8 +64,6 @@ public class SponsorsPage extends DynamicContentPage<SponsorsEntity> {
 							});
 					}
 				}).start();
-		t.nameView.setText(l.getName());
-		t.descriptionView.setText(l.getAbout());
 
 		return convertView;
 	}

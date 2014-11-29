@@ -82,7 +82,8 @@ public class NavigationView {
 		});
 		mDrawerListView.setAdapter(new NavigationAdapter(new String[] { c.getString(R.string.title_section1),
 				c.getString(R.string.title_section2), c.getString(R.string.title_section5),
-				c.getString(R.string.title_section3), c.getString(R.string.title_section4) }));
+				c.getString(R.string.title_section3), c.getString(R.string.title_section4),
+				c.getString(R.string.title_section6) }));
 		mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
 		mDrawerListView.setBackgroundColor(MainActivity.getCurrentColor());
 		configureDrawerLayout(drawerLayout);
