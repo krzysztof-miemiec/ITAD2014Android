@@ -20,6 +20,7 @@ public class CounterView extends View {
 	private Paint mWhitePaint, mBackgroundPaint;
 	private CounterArc mSeconds, mMinutes, mHours, mDays;
 	private long mEndTime;
+	private boolean mDone;
 	private Handler mHandler;
 	private Runnable mInvalidateRunnable = new Runnable() {
 		@Override
@@ -72,13 +73,15 @@ public class CounterView extends View {
 		}
 
 		void draw(Canvas c){
-			c.drawArc(mOval, -90, mAngle, true, mPaint);
-			c.drawOval(mInnerOval, mBackgroundPaint);
-			float cx = (float) Math.sin(Math.PI * mAngle / 180) * (mRadius - THICKNESS / 2) + mCenterX;
-			float cy = (float) -Math.cos(Math.PI * mAngle / 180) * (mRadius - THICKNESS / 2) + mCenterY;
-			c.drawCircle(cx, cy, THICKNESS * 1.9f, mPaint);
-			c.drawText(String.valueOf(mValue), cx, cy - THICKNESS * 0.1f, mWhitePaint);
-			c.drawText(mText, cx, cy + THICKNESS * 1.6f, mWhitePaint);
+			if (!mDone) {
+				c.drawArc(mOval, -90, mAngle, true, mPaint);
+				c.drawOval(mInnerOval, mBackgroundPaint);
+				float cx = (float) Math.sin(Math.PI * mAngle / 180) * (mRadius - THICKNESS / 2) + mCenterX;
+				float cy = (float) -Math.cos(Math.PI * mAngle / 180) * (mRadius - THICKNESS / 2) + mCenterY;
+				c.drawCircle(cx, cy, THICKNESS * 1.9f, mPaint);
+				c.drawText(String.valueOf(mValue), cx, cy - THICKNESS * 0.1f, mWhitePaint);
+				c.drawText(mText, cx, cy + THICKNESS * 1.6f, mWhitePaint);
+			}
 		}
 	}
 
@@ -138,6 +141,16 @@ public class CounterView extends View {
 		setupSizing(getWidth(), getHeight());
 	}
 
+	public interface OnEndListener {
+		public void onEnd();
+	}
+
+	private OnEndListener mOEL;
+
+	public void setOnEndListner(OnEndListener oel){
+		mOEL = oel;
+	}
+
 	public void start(){
 		if (mRefreshThread != null) {
 			stop();
@@ -156,6 +169,8 @@ public class CounterView extends View {
 							mHours.setValue(0);
 							mDays.setValue(0);
 							postInvalidate();
+							if (mOEL != null)
+								mOEL.onEnd();
 							break;
 						}
 						v = t / (24 * 3600 * 1000);

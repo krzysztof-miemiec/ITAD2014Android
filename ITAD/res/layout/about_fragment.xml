@@ -18,6 +18,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
+                android:id="@+id/header"
                 android:text="@string/time_left"
                 android:textColor="@android:color/white"
                 android:textSize="30sp" />
