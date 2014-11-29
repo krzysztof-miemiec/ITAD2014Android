@@ -42,6 +42,18 @@ public class AsyncBitmapRequest {
 		task = new Runnable() {
 			@Override
 			public void run(){
+				if (imgView != null) {
+					final ImageView iv = imgView.get();
+					if (iv != null) {
+						((Activity) iv.getContext()).runOnUiThread(new Runnable() {
+							@Override
+							public void run(){
+								iv.setImageBitmap(null);
+								iv.invalidate();
+							}
+						});
+					}
+				}
 				final Bitmap b = bitmapLoad.request();
 				if (imgView != null) {
 					final ImageView iv = imgView.get();

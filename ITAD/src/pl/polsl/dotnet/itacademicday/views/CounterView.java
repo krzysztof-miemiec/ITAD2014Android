@@ -3,13 +3,14 @@ package pl.polsl.dotnet.itacademicday.views;
 import java.util.GregorianCalendar;
 
 import pl.polsl.dotnet.itacademicday.R;
+import pl.polsl.dotnet.itacademicday.layouts.MainActivity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.RectF;
-import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.View;
@@ -104,7 +105,8 @@ public class CounterView extends View {
 
 	private void init(){
 		setWillNotDraw(false);
-		setLayerType(LAYER_TYPE_SOFTWARE, null);
+		if (Build.VERSION.SDK_INT >= 11)
+			setLayerType(LAYER_TYPE_SOFTWARE, null);
 		mHandler = new Handler();
 		THICKNESS = getContext().getResources().getDimension(R.dimen.counter_thickness);
 		mWhitePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -112,7 +114,8 @@ public class CounterView extends View {
 		mWhitePaint.setTextAlign(Align.CENTER);
 		mWhitePaint.setTextSize(THICKNESS * 2);
 		mBackgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-		mBackgroundPaint.setColor(((ColorDrawable) getBackground()).getColor());
+		int bgcolor = MainActivity.getDrawableColor(getBackground());
+		mBackgroundPaint.setColor(bgcolor);
 		mSeconds = new CounterArc(0xFF2196F3, 60, 0.8f, "S");
 		mMinutes = new CounterArc(0xFFF44336, 60, 0.6f, "M");
 		mHours = new CounterArc(0xFF4CAF50, 24, 0.4f, "H");

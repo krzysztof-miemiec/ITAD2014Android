@@ -6,6 +6,7 @@ import pl.polsl.dotnet.itacademicday.R;
 import pl.polsl.dotnet.itacademicday.utils.WorkerThread;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Build;
 import android.os.StrictMode;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -168,7 +169,7 @@ public abstract class DynamicContentPage<T> extends Page {
 
 	private void adjustViewHeight(View v){
 		GridView.LayoutParams lp = (GridView.LayoutParams) v.getLayoutParams();
-		if (mGrid.getNumColumns() == 1) {
+		if (getNumColumnsCompat() == 1) {
 			if (lp.height != LayoutParams.WRAP_CONTENT) {
 				lp.height = LayoutParams.WRAP_CONTENT;
 				v.setLayoutParams(lp);
@@ -203,6 +204,23 @@ public abstract class DynamicContentPage<T> extends Page {
 					.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.subtitle_font_small));
 			int p = (int) getResources().getDimension(R.dimen.subtitle_padding_small);
 			mSubheader.setPadding(p, p, p, p);
+		}
+	}
+
+	private int getNumColumnsCompat(){
+		if (Build.VERSION.SDK_INT >= 11) {
+			return mGrid.getNumColumns();
+
+		} else {
+			int columns = 0;
+			int children = mGrid.getChildCount();
+			if (children > 0) {
+				int width = mGrid.getChildAt(0).getMeasuredWidth();
+				if (width > 0) {
+					columns = mGrid.getWidth() / width;
+				}
+			}
+			return columns > 0 ? columns : GridView.AUTO_FIT;
 		}
 	}
 }

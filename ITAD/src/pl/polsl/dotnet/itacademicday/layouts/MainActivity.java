@@ -11,6 +11,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
@@ -245,7 +248,7 @@ public class MainActivity extends Activity implements NavigationView.NavigationD
 		if (mHeader != null && mNavigationDrawer != null) {
 			int startColor;
 			try {
-				startColor = ((ColorDrawable) mHeader.getBackground()).getColor();
+				startColor = getDrawableColor(mHeader.getBackground());
 			} catch (Exception e) {
 				startColor = Color.WHITE;
 			}
@@ -308,6 +311,18 @@ public class MainActivity extends Activity implements NavigationView.NavigationD
 		} else {
 			tv.setVisibility(View.VISIBLE);
 			tv.setText(s);
+		}
+	}
+
+	public static int getDrawableColor(Drawable d){
+		if (Build.VERSION.SDK_INT < 11) {
+			ColorDrawable colorDrawable = ((ColorDrawable) d);
+			Bitmap bitmap = Bitmap.createBitmap(1, 1, Config.ARGB_4444);
+			Canvas canvas = new Canvas(bitmap);
+			colorDrawable.draw(canvas);
+			return bitmap.getPixel(0, 0);
+		} else {
+			return ((ColorDrawable) d).getColor();
 		}
 	}
 
