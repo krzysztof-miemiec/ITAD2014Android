@@ -58,7 +58,7 @@ public class WallFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		
-		signalerClient = new SignalRClient(mMessages);
+		signalerClient = new SignalRClient();
 		
 		mContext = container.getContext();
 		mCommentAwaitForSubmit = getResources().getString(R.string.await_for_comment_submit);
