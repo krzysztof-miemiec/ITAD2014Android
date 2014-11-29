@@ -42,8 +42,6 @@ import android.widget.FrameLayout.LayoutParams;
  * translucent system UI modes.
  *
  */
-@SuppressLint("RtlHardcoded")
-@SuppressWarnings({ "unchecked", "rawtypes" })
 public class SystemBarTintManager {
 
 	static {

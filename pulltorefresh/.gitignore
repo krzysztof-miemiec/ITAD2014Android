@@ -1,8 +1,0 @@
-*.dex
-*.class
-*.apk
-*.ap_
-bin/
-gen/
-proguard/
-local.properties

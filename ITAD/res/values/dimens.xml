@@ -13,10 +13,11 @@
     
     <dimen name="counter_thickness">10dp</dimen>
     <dimen name="list_item_height">80dp</dimen>
-    <dimen name="big_font">18sp</dimen>
+    <dimen name="big_font">20sp</dimen>
+    <dimen name="descr_font">17dp</dimen>
     <dimen name="app_title_font">20dp</dimen>
     <dimen name="title_padding">10dp</dimen>
-    <dimen name="subtitle_height">120dp</dimen>
-    <dimen name="subtitle_font">75dp</dimen>
-    <dimen name="subtitle_padding">15dp</dimen>
+    <dimen name="subtitle_height">80dp</dimen>
+    <dimen name="subtitle_font">56sp</dimen>
+    <dimen name="subtitle_padding">14dp</dimen>
 </resources>

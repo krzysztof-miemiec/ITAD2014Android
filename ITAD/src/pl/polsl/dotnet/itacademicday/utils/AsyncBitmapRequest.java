@@ -4,6 +4,7 @@ import java.lang.ref.WeakReference;
 
 import pl.polsl.dotnet.itacademicday.utils.Bitmaps.BitmapRequest;
 import pl.polsl.dotnet.itacademicday.utils.Bitmaps.RequestResult;
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.widget.ImageView;
 
@@ -45,7 +46,7 @@ public class AsyncBitmapRequest {
 				if (imgView != null) {
 					final ImageView iv = imgView.get();
 					if (iv != null) {
-						iv.post(new Runnable() {
+						((Activity) iv.getContext()).runOnUiThread(new Runnable() {
 							@Override
 							public void run(){
 								if (b != null) {
@@ -54,6 +55,7 @@ public class AsyncBitmapRequest {
 									if (errorResource != 0)
 										iv.setImageResource(errorResource);
 								}
+								iv.invalidate();
 							}
 						});
 					}

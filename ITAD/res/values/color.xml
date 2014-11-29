@@ -4,4 +4,6 @@
 <color name="section2">#009688</color>
 <color name="section3">#2196F3</color>
 <color name="section4">#4CAF50</color>
+<color name="section5">#FFC107</color>
+<color name="background">#f5f5f5</color>
 </resources>
