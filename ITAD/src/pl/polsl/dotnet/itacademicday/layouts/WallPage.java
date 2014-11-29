@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import pl.polsl.dotnet.itacademicday.R;
 import pl.polsl.dotnet.itacademicday.core.signalr.SignalRClient;
-import pl.polsl.dotnet.itacademicday.core.signalr.SignalRClient.OnMessage;
 import pl.polsl.dotnet.itacademicday.layouts.MainActivity.FontStyle;
 import android.content.Context;
 import android.graphics.Color;
@@ -91,6 +90,7 @@ public class WallPage extends Page {
 
 	@Override
 	protected void onCreate(){
+
 		mCommentAwaitForSubmit = getResources().getString(R.string.await_for_comment_submit);
 		mServerError = getResources().getString(R.string.server_error);
 		final String connectionError = getResources().getString(R.string.connection_error);
@@ -102,13 +102,7 @@ public class WallPage extends Page {
 
 		mAdapter = new WallAdapter();
 		mList.setAdapter(mAdapter);
-		mSignalerClient = new SignalRClient(new OnMessage() {
-
-			@Override
-			public void onMessage(String message){
-				mAdapter.put(message);
-			}
-		});
+		mSignalerClient = SignalRClient.getInstance();
 
 		final EditText commentEdit = (EditText) findViewById(R.id.commentEdit);
 		final ImageButton commentSubmit = (ImageButton) findViewById(R.id.commentSubmit);
@@ -178,6 +172,7 @@ public class WallPage extends Page {
 	@Override
 	public boolean onBack(){
 		((MainActivity) getContext()).setContentPage(new AboutPage(getContext()));
+		
 		return true;
 	}
 }
