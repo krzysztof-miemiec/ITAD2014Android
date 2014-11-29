@@ -2,16 +2,19 @@ package pl.polsl.dotnet.itacademicday.layouts;
 
 import java.util.ArrayList;
 
+import pl.polsl.dotnet.itacademicday.R;
 import pl.polsl.dotnet.itacademicday.utils.WorkerThread;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.StrictMode;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ListView;
+import android.widget.GridView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public abstract class DynamicContentPage<T> extends Page {
@@ -20,15 +23,16 @@ public abstract class DynamicContentPage<T> extends Page {
 		super(c);
 
 		mAdapter = new GenericAdapter();
-		mList.setAdapter(mAdapter);
-		mList.invalidateViews();
+		mGrid.setAdapter(mAdapter);
+		mGrid.invalidateViews();
 		mAdapter.notifyDataSetChanged();
 		loadData();
 	}
 
-	private ListView mList;
+	private GridView mGrid;
 	private GenericAdapter mAdapter;
 	private ProgressBar mProgressBar;
+	private TextView mSubheader;
 
 	protected abstract View getView(T data, LayoutInflater inflater, View view);
 
@@ -99,12 +103,12 @@ public abstract class DynamicContentPage<T> extends Page {
 
 	protected abstract ArrayList<T> getData();
 
-	protected void setListView(ListView ptrlv){
-		mList = ptrlv;
+	protected void setGridView(GridView ptrlv){
+		mGrid = ptrlv;
 	}
 
-	protected ListView getListView(){
-		return mList;
+	protected GridView getGridView(){
+		return mGrid;
 	}
 
 	protected void setProgressBar(ProgressBar pb){
@@ -140,4 +144,29 @@ public abstract class DynamicContentPage<T> extends Page {
 		worker.addTask(mLoadDataRunnable);
 	}
 
+	protected void setSubheader(TextView subheader){
+		mSubheader = subheader;
+	}
+
+	@Override
+	protected void onSizeChanged(int w, int h, int oldw, int oldh){
+		super.onSizeChanged(w, h, oldw, oldh);
+		getGridView().setNumColumns(
+				(int) Math.floor(Math.max(1, w / getResources().getDimension(R.dimen.column_width))));
+	}
+
+	@Override
+	protected void onPortrait(){
+		if (mSubheader != null) {
+			mSubheader.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.subtitle_font));
+		}
+	}
+
+	@Override
+	protected void onLandscape(){
+		if (mSubheader != null) {
+			mSubheader
+					.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.subtitle_font_small));
+		}
+	}
 }

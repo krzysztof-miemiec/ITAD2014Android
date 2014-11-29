@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/section2"
-        android:minHeight="@dimen/subtitle_height"
         android:padding="@dimen/subtitle_padding"
         android:text="@string/title_section2"
         android:textColor="@android:color/white"
@@ -21,8 +20,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-        <ListView
-            android:id="@+id/agenda_list"
+        <GridView
+            android:id="@+id/agenda_grid"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#fff"

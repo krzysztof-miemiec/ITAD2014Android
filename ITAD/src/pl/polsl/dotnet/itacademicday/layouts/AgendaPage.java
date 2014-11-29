@@ -13,8 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -29,18 +29,19 @@ public class AgendaPage extends DynamicContentPage<LecturesEntity> {
 
 	private class LectureViewTag {
 		ImageView iconView;
-		TextView nameView, lecturerView, timeView;
+		TextView nameView, companyView, lecturerView, timeView;
 	}
 
 	@Override
 	protected View getView(LecturesEntity l, LayoutInflater inflater, View convertView){
 		LectureViewTag t;
 		if (convertView == null) {
-			ViewGroup v = (ViewGroup) inflater.inflate(R.layout.lecture, getListView(), false);
+			ViewGroup v = (ViewGroup) inflater.inflate(R.layout.lecture, getGridView(), false);
 			MainActivity.setFont(v, FontStyle.SEMILIGHT);
 			t = new LectureViewTag();
 			t.iconView = (ImageView) v.findViewById(R.id.icon);
 			t.nameView = (TextView) v.findViewById(R.id.name);
+			t.companyView = (TextView) v.findViewById(R.id.company);
 			t.lecturerView = (TextView) v.findViewById(R.id.lecturer);
 			t.timeView = (TextView) v.findViewById(R.id.time);
 			v.setTag(t);
@@ -51,6 +52,7 @@ public class AgendaPage extends DynamicContentPage<LecturesEntity> {
 		Bitmaps.loadNetBitmapAsync(l.getIconURL(), t.iconView.getWidth(), t.iconView.getHeight(), true)
 				.result(t.iconView).start();
 		t.nameView.setText(l.getName());
+		t.companyView.setText(l.getSponsor());
 		t.lecturerView.setText(l.getLecturer());
 		t.timeView.setText(l.getStartTimeText() + " - " + l.getEndTimeText());
 
@@ -77,8 +79,8 @@ public class AgendaPage extends DynamicContentPage<LecturesEntity> {
 	protected void onCreate(){
 		MainActivity.setFont(this, FontStyle.REGULAR);
 		MainActivity.setFont(findViewById(R.id.subtitle), FontStyle.LIGHT);
-		setListView((ListView) findViewById(R.id.agenda_list));
-		getListView().setOnItemClickListener(new OnItemClickListener() {
+		setGridView((GridView) findViewById(R.id.agenda_grid));
+		getGridView().setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id){
 				LecturePage lp = new LecturePage(getContext());
@@ -87,6 +89,7 @@ public class AgendaPage extends DynamicContentPage<LecturesEntity> {
 			}
 
 		});
+		setSubheader((TextView) findViewById(R.id.subtitle));
 		setProgressBar((ProgressBar) findViewById(R.id.progress_bar));
 	}
 

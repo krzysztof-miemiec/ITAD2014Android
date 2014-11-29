@@ -1,37 +1,49 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="#fff"
     android:minHeight="@dimen/list_item_height"
     android:orientation="horizontal"
     android:padding="8dp" >
 
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/section2"
+        android:padding="4dp"
+        android:textColor="#fff"
+        android:textSize="@dimen/big_font" />
+
     <ImageView
         android:id="@+id/icon"
         android:layout_width="@dimen/list_item_height"
-        android:layout_height="@dimen/list_item_height"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/name"
         android:adjustViewBounds="true"
-        android:background="@color/section2"
         android:contentDescription="@string/app_name"
+        android:maxWidth="@dimen/list_item_height"
         android:scaleType="fitStart" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/name"
+        android:layout_toRightOf="@+id/icon"
         android:orientation="vertical" >
 
         <TextView
-            android:id="@+id/name"
+            android:id="@+id/lecturer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="4dp"
-            android:background="@color/section2"
-            android:textColor="#fff"
-            android:textSize="@dimen/big_font" />
+            android:padding="2dp"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/descr_font" />
 
         <TextView
-            android:id="@+id/lecturer"
+            android:id="@+id/company"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="2dp"
@@ -47,4 +59,4 @@
             android:textSize="@dimen/descr_font" />
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

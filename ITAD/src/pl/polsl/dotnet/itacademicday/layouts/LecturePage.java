@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 public class LecturePage extends Page {
 
-	private TextView nameView, timeView, lecturerView, descriptionView;
+	private TextView nameView, timeView, sponsorView, lecturerView, descriptionView;
 	private ImageView imageView;
 
 	public LecturePage(Context c) {
@@ -37,6 +37,7 @@ public class LecturePage extends Page {
 		nameView = (TextView) findViewById(R.id.name);
 		timeView = (TextView) findViewById(R.id.time);
 		lecturerView = (TextView) findViewById(R.id.lecturer);
+		sponsorView = (TextView) findViewById(R.id.sponsor);
 		imageView = (ImageView) findViewById(R.id.image);
 		descriptionView = (TextView) findViewById(R.id.description);
 		ImageButton back = (ImageButton) findViewById(R.id.back);
@@ -53,6 +54,7 @@ public class LecturePage extends Page {
 	public void setLecture(LecturesEntity lecture){
 		nameView.setText(lecture.getName());
 		lecturerView.setText(lecture.getLecturer());
+		sponsorView.setText(lecture.getSponsor());
 		timeView.setText(lecture.getStartTimeText() + " - " + lecture.getEndTimeText());
 		descriptionView.setText(lecture.getAbout());
 		Bitmaps.loadNetBitmapAsync(lecture.getIconURL(), imageView.getWidth(), imageView.getHeight(), true)
