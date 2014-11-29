@@ -48,9 +48,9 @@ public class SpeakersPage extends DynamicContentPage<SpeakersEntity> {
 		}
 		Bitmaps.loadNetBitmapAsync(l.getImageUrl(), t.iconView.getWidth(), t.iconView.getHeight(), true)
 				.result(t.iconView).start();
-		t.nameView.setText(l.getName());
-		t.companyView.setText(l.getCompany());
-		t.descriptionView.setText(l.getBio());
+		MainActivity.setString(t.nameView, l.getName());
+		MainActivity.setString(t.companyView, l.getCompany());
+		MainActivity.setString(t.descriptionView, l.getBio());
 
 		return convertView;
 	}

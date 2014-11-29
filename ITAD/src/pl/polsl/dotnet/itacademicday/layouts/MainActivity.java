@@ -302,6 +302,15 @@ public class MainActivity extends Activity implements NavigationView.NavigationD
 		}
 	}
 
+	public static void setString(TextView tv, String s){
+		if (s == null || s.equals("") || s.equals("null")) {
+			tv.setVisibility(View.GONE);
+		} else {
+			tv.setVisibility(View.VISIBLE);
+			tv.setText(s);
+		}
+	}
+
 	public static void tintView(View v, int color){
 		if (v instanceof ImageButton) {
 			ImageButton ib = (ImageButton) v;

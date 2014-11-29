@@ -27,6 +27,7 @@ public abstract class DynamicContentPage<T> extends Page {
 		mGrid.invalidateViews();
 		mAdapter.notifyDataSetChanged();
 		loadData();
+		onOrientationChange(getResources().getConfiguration().orientation);
 	}
 
 	private GridView mGrid;
@@ -186,6 +187,8 @@ public abstract class DynamicContentPage<T> extends Page {
 	protected void onPortrait(){
 		if (mSubheader != null) {
 			mSubheader.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.subtitle_font));
+			int p = (int) getResources().getDimension(R.dimen.subtitle_padding);
+			mSubheader.setPadding(p, p, p, p);
 		}
 	}
 
@@ -198,6 +201,8 @@ public abstract class DynamicContentPage<T> extends Page {
 		if (mSubheader != null) {
 			mSubheader
 					.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.subtitle_font_small));
+			int p = (int) getResources().getDimension(R.dimen.subtitle_padding_small);
+			mSubheader.setPadding(p, p, p, p);
 		}
 	}
 }

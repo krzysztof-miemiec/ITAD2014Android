@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -10,33 +10,22 @@
         android:id="@+id/icon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:maxHeight="200dp"
+        android:maxHeight="140dp"
+        android:layout_gravity="center"
         android:background="#fff"
-        android:scaleType="fitStart" />
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter" />
 
     <TextView
         android:id="@+id/name"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/icon"
-        android:gravity="center"
+        android:maxHeight="140dp"
+        android:layout_gravity="center"
         android:padding="4dp"
         android:text="Name"
         android:textColor="@color/text_color"
-        android:textSize="@dimen/subtitle_font"
+        android:textSize="@dimen/subtitle_font_small"
         android:visibility="gone" />
 
-    <TextView
-        android:id="@+id/description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/name"
-        android:padding="4dp"
-        android:singleLine="false"
-        android:text="Descr"
-        android:textColor="@color/text_color"
-        android:textSize="@dimen/descr_font"
-        android:visibility="gone" />
-
-</RelativeLayout>
+</FrameLayout>

@@ -51,9 +51,9 @@ public class AgendaPage extends DynamicContentPage<LecturesEntity> {
 		}
 		Bitmaps.loadNetBitmapAsync(l.getIconURL(), t.iconView.getWidth(), t.iconView.getHeight(), true)
 				.result(t.iconView).start();
-		t.nameView.setText(l.getName());
-		t.companyView.setText(l.getSponsor());
-		t.lecturerView.setText(l.getLecturer());
+		MainActivity.setString(t.nameView, l.getName());
+		MainActivity.setString(t.companyView, l.getSponsor());
+		MainActivity.setString(t.lecturerView, l.getLecturer());
 		t.timeView.setText(l.getStartTimeText() + " - " + l.getEndTimeText());
 
 		return convertView;

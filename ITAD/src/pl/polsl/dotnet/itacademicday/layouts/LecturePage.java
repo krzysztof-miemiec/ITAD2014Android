@@ -60,11 +60,11 @@ public class LecturePage extends Page {
 
 	public void setLecture(LecturesEntity lecture){
 		mLecture = lecture;
-		nameView.setText(lecture.getName());
-		lecturerView.setText(lecture.getLecturer());
-		sponsorView.setText(lecture.getSponsor());
+		MainActivity.setString(nameView, lecture.getName());
+		MainActivity.setString(lecturerView, lecture.getLecturer());
+		MainActivity.setString(sponsorView, lecture.getSponsor());
 		timeView.setText(lecture.getStartTimeText() + " - " + lecture.getEndTimeText());
-		descriptionView.setText(lecture.getAbout());
+		MainActivity.setString(descriptionView, lecture.getAbout());
 		Bitmaps.loadNetBitmapAsync(lecture.getIconURL(), imageView.getWidth(), imageView.getHeight(), true)
 				.result(imageView).start();
 	}

@@ -29,7 +29,7 @@ public class SponsorsPage extends DynamicContentPage<SponsorsEntity> {
 
 	private class SponsorViewTag {
 		ImageView iconView;
-		TextView nameView, descriptionView;
+		TextView nameView;
 	}
 
 	@Override
@@ -41,7 +41,6 @@ public class SponsorsPage extends DynamicContentPage<SponsorsEntity> {
 			t = new SponsorViewTag();
 			t.iconView = (ImageView) v.findViewById(R.id.icon);
 			t.nameView = (TextView) v.findViewById(R.id.name);
-			t.descriptionView = (TextView) v.findViewById(R.id.description);
 			v.setTag(t);
 			convertView = v;
 		} else {
@@ -49,7 +48,6 @@ public class SponsorsPage extends DynamicContentPage<SponsorsEntity> {
 		}
 		t.nameView.setVisibility(VISIBLE);
 		t.nameView.setText(l.getName());
-		t.descriptionView.setText(l.getAbout());
 		t.iconView.setImageBitmap(null);
 		Bitmaps.loadNetBitmapAsync(l.getUrlLogo(), t.iconView.getWidth(), t.iconView.getHeight(), true)
 				.result(t.iconView).result(new RequestResult() {
@@ -85,6 +83,11 @@ public class SponsorsPage extends DynamicContentPage<SponsorsEntity> {
 	@Override
 	protected int getLayoutResourceId(){
 		return R.layout.sponsors_fragment;
+	}
+
+	@Override
+	protected int getGridMaxItemHeight(){
+		return LayoutParams.WRAP_CONTENT;
 	}
 
 	@Override
